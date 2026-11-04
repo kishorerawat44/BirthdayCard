@@ -1,0 +1,2470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Birthday Card Studio · Corporate Communications</title>
+<style>
+:root {
+  --blue: #0096db;
+  --red: #c02222;
+  --ink: #232323;
+  --muted: #687786;
+  --line: #dce8ef;
+  --pale: #f0f9ff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 22px;
+  background: linear-gradient(135deg, #0096db 0%, #c02222 100%);
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  color: #263746;
+}
+.app { max-width: 1520px; margin: auto; }
+
+/* Studio Top Bar */
+.top {
+  background: #fff;
+  border-radius: 15px;
+  padding: 18px 26px;
+  box-shadow: 0 10px 30px #0002;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.brand { display: flex; align-items: center; gap: 13px; }
+.logo-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--red), var(--blue));
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 900;
+  font-size: 20px;
+  overflow: hidden;
+}
+.logo-mark img { width: 100%; height: 100%; object-fit: contain; background: #fff; padding: 3px; }
+.brand h1 { font-size: 21px; margin: 0; color: #263746; }
+.brand p { margin: 2px 0 0; color: #7a8792; font-size: 11px; letter-spacing: .12em; font-weight: 700; }
+.topnote { font-size: 11px; color: #73818d; text-align: right; line-height: 1.45; }
+
+/* Navigation Tabs */
+.tabs { display: flex; gap: 10px; margin-bottom: 18px; }
+.tab {
+  flex: 1;
+  border: 0;
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: left;
+  cursor: pointer;
+  background: #ffffffd9;
+  color: #365064;
+  box-shadow: 0 5px 18px #00000012;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  transition: .2s;
+}
+.tab .num { font-size: 25px; font-weight: 800; opacity: .55; }
+.tab strong { display: block; font-size: 16px; }
+.tab small { display: block; font-size: 11px; margin-top: 3px; opacity: .75; }
+.tab.active { background: #fff; color: var(--red); outline: 3px solid #ffffff65; }
+.tab.employee.active { color: var(--blue); }
+
+/* Panels & Form Controls */
+.panel {
+  background: #fff;
+  border-radius: 15px;
+  padding: 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 30px #0002;
+}
+.section-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 17px;
+}
+.section-title h2 { margin: 0 0 4px; font-size: 19px; color: #263746; }
+.section-title p { margin: 0; color: #7c8994; font-size: 12px; }
+.step { font-size: 11px; color: var(--blue); font-weight: 800; letter-spacing: .12em; display: block; margin-bottom: 3px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.field { display: block; margin: 0 0 13px; }
+.field label { display: block; font-weight: 650; font-size: 12px; color: #465767; margin-bottom: 6px; }
+.field input[type="text"],
+.field input[type="date"],
+.field input:not([type]),
+.field select {
+  width: 100%;
+  border: 1px solid #cfe0e9;
+  border-radius: 7px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #34495a;
+  background: #fff;
+  outline: none;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px #0096db18;
+}
+.checkline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #465767;
+  margin: 8px 0 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.checkline input { accent-color: var(--blue); width: 15px; height: 15px; cursor: pointer; }
+.uploadbox {
+  border: 2px dashed var(--blue);
+  border-radius: 11px;
+  padding: 22px;
+  text-align: center;
+  background: #f5fbff;
+  cursor: pointer;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  transition: .15s;
+}
+.uploadbox:hover { background: #edf8ff; border-color: var(--red); }
+.uploadbox .ico { font-size: 30px; }
+.uploadbox strong { color: var(--blue); font-size: 14px; }
+.uploadbox small { color: #738391; font-size: 11px; }
+.uploadbox input { max-width: 100%; font-size: 11px; margin-top: 7px; }
+.hint {
+  font-size: 11px;
+  color: #5e7080;
+  background: #eef8fd;
+  border-left: 4px solid var(--blue);
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+.btn {
+  border: 0;
+  border-radius: 7px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #e9f2f7;
+  color: #365064;
+  transition: .15s;
+}
+.btn:hover { filter: brightness(.97); transform: translateY(-1px); }
+.btn.sm { padding: 7px 11px; font-size: 11.5px; }
+.btn.primary { background: linear-gradient(135deg, var(--blue), var(--red)); color: #fff; }
+.btn.red { background: var(--red); color: #fff; }
+.btn.green { background: #24965b; color: #fff; }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.status { font-size: 12px; margin-top: 10px; padding: 9px 12px; border-radius: 7px; display: none; }
+.status.show { display: block; }
+.status.ok { background: #e8f7ed; color: #22663b; }
+.status.err { background: #fff0f0; color: #a22; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 17px 0; }
+.stat { background: #f3f8fb; border-radius: 9px; padding: 12px; }
+.stat b { display: block; font-size: 22px; color: var(--blue); }
+.stat span { font-size: 11px; color: #71808d; }
+
+/* Employee Data Table */
+.tablewrap { overflow: auto; max-height: 360px; border: 1px solid #e2e9ee; border-radius: 8px; margin-top: 12px; }
+.employee-table { border-collapse: collapse; width: 100%; font-size: 12px; }
+.employee-table th {
+  position: sticky;
+  top: 0;
+  background: linear-gradient(135deg, var(--blue), var(--red));
+  color: #fff;
+  padding: 11px 10px;
+  text-align: left;
+  white-space: nowrap;
+  z-index: 2;
+}
+.employee-table td { padding: 9px 10px; border-bottom: 1px solid #edf1f4; background: #fff; }
+.employee-table tr { cursor: grab; }
+.employee-table tr:hover td { background: #f4faff; }
+.employee-table tr.dragging { opacity: .4; }
+.employee-table tr.drag-over td { border-top: 2px solid var(--red); }
+.badge {
+  display: inline-block;
+  border-radius: 20px;
+  background: #e9f6fd;
+  color: #0078b3;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+/* Preview Layout & Side Customisation Panel */
+.preview-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 18px;
+  align-items: start;
+}
+.preview-stage {
+  background: #e7eef3;
+  border-radius: 12px;
+  padding: 18px;
+  overflow: auto;
+}
+.sidepanel {
+  background: #f7fafc;
+  border: 1px solid #e2eaf0;
+  border-radius: 12px;
+  padding: 16px;
+}
+.sidepanel h3 { font-size: 13.5px; margin: 0 0 11px; color: #2b4253; letter-spacing: .01em; }
+.sidepanel .field { margin-bottom: 11px; }
+.sidepanel .field input[type="text"],
+.sidepanel .field input[type="date"],
+.sidepanel .field input:not([type]),
+.sidepanel .field select { padding: 8px 10px; font-size: 12px; }
+.divider { height: 1px; background: #dde6ec; margin: 14px 0; }
+.small { font-size: 10.5px; color: #748491; line-height: 1.45; margin: 0; }
+.logo-box-mini {
+  background: #fff;
+  border: 1px dashed #bdd3e0;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.logo-box-mini img {
+  max-height: 44px;
+  max-width: 180px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 8px;
+}
+
+/* =========================================================
+   ALL EMPLOYEES ARTBOARD (1100px Base Coordinate System)
+   ========================================================= */
+.artboard {
+  width: 1100px;
+  min-height: 690px;
+  background: #ffffff;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 28px #1c2c3d22;
+  color: #232323;
+  display: flex;
+  flex-direction: column;
+}
+.art-hero {
+  min-height: 230px;
+  padding: 34px 64px 32px;
+  color: #fff;
+  background: linear-gradient(110deg, #c02222 0%, #c02222 58%, #0096db 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.art-hero.align-left {
+  align-items: flex-start;
+  text-align: left;
+}
+/* Symmetrical subtle decorative circles */
+.art-hero .ring-r1,
+.art-hero .ring-r2,
+.art-hero .ring-l1,
+.art-hero .ring-l2 {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.art-hero .ring-r1 { right: -85px; top: -135px; width: 320px; height: 320px; border: 26px solid #ffffff1c; }
+.art-hero .ring-r2 { right: 55px; bottom: -95px; width: 185px; height: 185px; border: 18px solid #ffffff16; }
+.art-hero .ring-l1 { left: -95px; bottom: -145px; width: 300px; height: 300px; border: 24px solid #ffffff16; }
+.art-hero .ring-l2 { left: 55px; top: -85px; width: 165px; height: 165px; border: 16px solid #ffffff12; }
+
+.hero-logo-slot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.hero-logo-slot.reserved-empty {
+  height: 52px;
+  margin-bottom: 10px;
+}
+.hero-logo-slot.hidden {
+  display: none;
+}
+.hero-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-logo-wrap.pill {
+  background: #ffffff;
+  padding: 8px 22px;
+  border-radius: 999px;
+  box-shadow: 0 4px 14px #0000001f;
+}
+.hero-logo-wrap.card {
+  background: #ffffff;
+  padding: 8px 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px #0000001f;
+}
+.hero-logo-wrap img {
+  display: block;
+  width: auto;
+  max-width: 360px;
+  object-fit: contain;
+}
+.art-hero h2 {
+  font-size: 54px;
+  font-weight: 800;
+  letter-spacing: .015em;
+  line-height: 1.04;
+  margin: 0 0 11px;
+  position: relative;
+  z-index: 1;
+}
+.art-hero p {
+  font-size: 18.5px;
+  line-height: 1.42;
+  margin: 0;
+  max-width: 790px;
+  opacity: .97;
+  position: relative;
+  z-index: 1;
+}
+.art-date {
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  margin-top: 14px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+.art-date:empty { display: none; }
+.art-bluebar { height: 8px; background: #0096db; width: 100%; flex-shrink: 0; }
+
+/* Centered Non-Stretching Portrait Card Grid */
+.art-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 36px 40px 42px;
+}
+.art-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  margin: 0 auto;
+  width: 100%;
+}
+.emp-card {
+  border: 1px solid #dce7ed;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 18px #0f294212;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+  padding: 22px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+}
+.emp-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #0096db, #c02222);
+}
+.emp-photo {
+  margin: 0 auto 14px;
+  background: #f2f6f9;
+  border: 1px solid #e3edf3;
+  position: relative;
+  overflow: hidden;
+  color: #0096db;
+  font-size: 38px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: box-shadow .15s, transform .15s;
+}
+.emp-photo:hover {
+  box-shadow: 0 0 0 3px #0096db40;
+}
+.emp-photo img {
+  position: absolute;
+  user-select: none;
+  -webkit-user-drag: none;
+  max-width: none;
+}
+.emp-card h3 {
+  margin: 2px 0 6px;
+  color: #0096db;
+  font-size: 18.5px;
+  line-height: 1.25;
+  font-weight: 750;
+  width: 100%;
+  overflow-wrap: break-word;
+}
+.emp-meta-line {
+  width: 36px;
+  height: 2px;
+  background: #e5eff5;
+  border-radius: 2px;
+  margin: 2px auto 8px;
+}
+.emp-card p {
+  font-size: 12.5px;
+  line-height: 1.38;
+  color: #607180;
+  margin: 2px 0;
+  width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* Theme Variations */
+.design-celebration .art-hero { background: linear-gradient(120deg, #c02222 0%, #e04e5d 52%, #0096db 100%); }
+.design-celebration .art-bluebar { background: linear-gradient(90deg, #f3b43b, #e34f68, #0096db); }
+.design-celebration .emp-card {
+  border: 1px solid #f5dce0;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #fff9f8 100%);
+  box-shadow: 0 8px 22px #c0222216;
+}
+.design-celebration .emp-card::before { height: 7px; background: linear-gradient(90deg, #f3b43b, #e34f68, #0096db); }
+.design-celebration .emp-card h3 { color: #c02222; }
+
+.design-industrial .art-hero { background: linear-gradient(115deg, #162b39 0%, #24556b 100%); }
+.design-industrial .art-bluebar { background: #e3a72f; height: 9px; }
+.design-industrial .emp-card {
+  border-radius: 6px;
+  border: 1px solid #c2d0d7;
+  box-shadow: 0 4px 12px #162b3910;
+  background: #f9fbfc;
+}
+.design-industrial .emp-card::before { height: 6px; background: #e3a72f; }
+.design-industrial .emp-card h3 { color: #1f3e4f; }
+
+.design-minimal .art-hero { background: linear-gradient(180deg, #f4f7f9 0%, #eaeff3 100%); color: #233746; }
+.design-minimal .art-hero .ring-r1,
+.design-minimal .art-hero .ring-r2,
+.design-minimal .art-hero .ring-l1,
+.design-minimal .art-hero .ring-l2 { border-color: #0096db12; }
+.design-minimal .art-hero h2 { color: #c02222; }
+.design-minimal .art-hero p, .design-minimal .art-date { color: #4c6272; }
+.design-minimal .emp-card {
+  border: 1px solid #dfe6eb;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px #00000008;
+  background: #fff;
+}
+.design-minimal .emp-card::before { height: 4px; background: #0096db; }
+.design-minimal .emp-card h3 { color: #263e4d; }
+
+/* Artboard Footer */
+.art-footer {
+  height: 50px;
+  border-top: 1px solid #e5ecf0;
+  background: #fff;
+  padding: 0 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #60707c;
+  font-weight: 700;
+  letter-spacing: .08em;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+.art-footer.centered { justify-content: center; }
+.art-footer .f-left { color: #263746; }
+
+/* =========================================================
+   SENIOR LEADER ARTBOARD
+   ========================================================= */
+.senior-art {
+  background: #f5f7f9;
+  height: 690px;
+  min-height: 690px;
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+.senior-left {
+  position: absolute;
+  left: 65px;
+  top: 62px;
+  width: 384px;
+  height: 512px;
+  background: #fff;
+  border: 10px solid #fff;
+  border-radius: 8px;
+  box-shadow: 0 12px 35px #17283d25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 2;
+}
+.senior-left img {
+  position: absolute;
+  max-width: none;
+}
+.senior-right {
+  position: absolute;
+  left: 495px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 68px 65px 80px 85px;
+  color: #fff;
+  background: linear-gradient(145deg, #182e50 0%, #22428d 62%, #0096db 100%);
+  clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.senior-right::after {
+  content: "";
+  position: absolute;
+  right: -95px;
+  top: -110px;
+  width: 390px;
+  height: 390px;
+  border: 28px solid #ffffff1c;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.senior-logo-slot { margin-bottom: 14px; position: relative; z-index: 1; }
+.senior-logo-slot.reserved-empty { height: 42px; }
+.senior-right .kicker { font-size: 12px; letter-spacing: .2em; color: #d5e8f7; font-weight: 700; position: relative; z-index: 1; }
+.senior-right h2 { font-size: 54px; line-height: 1.02; margin: 16px 0 18px; position: relative; z-index: 1; }
+.senior-right .wish { font-size: 18.5px; line-height: 1.5; max-width: 500px; position: relative; z-index: 1; }
+.senior-right .personname { font-size: 31px; font-weight: 750; margin-top: 44px; position: relative; z-index: 1; }
+.senior-right .detail { font-size: 15px; color: #d7e6f2; margin-top: 7px; position: relative; z-index: 1; }
+.senior-right .accent { height: 5px; width: 100px; background: #ffd100; margin-top: 22px; position: relative; z-index: 1; }
+.senior-art .leader-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: #fff;
+  color: #5f6f7b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 44px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  z-index: 3;
+  border-top: 1px solid #e5ecf0;
+}
+
+/* =========================================================
+   PHOTO ZOOM & POSITION MODAL
+   ========================================================= */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: #0f223399;
+  backdrop-filter: blur(3px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+.modal-backdrop.open { display: flex; }
+.modal-card {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  padding: 22px 24px;
+  box-shadow: 0 20px 50px #0004;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.modal-head h3 { margin: 0; font-size: 17px; color: #263746; }
+.modal-close {
+  border: 0;
+  background: #eef3f7;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  color: #465767;
+}
+.crop-stage-wrap {
+  background: #edf3f7;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.crop-viewport {
+  width: 186px;
+  height: 248px;
+  background: #f2f6f9;
+  border: 2px solid var(--blue);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+  box-shadow: 0 6px 18px #00000018;
+}
+.crop-viewport:active { cursor: grabbing; }
+.crop-viewport img {
+  position: absolute;
+  max-width: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.slider-row {
+  display: grid;
+  grid-template-columns: 92px 1fr 44px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: #465767;
+}
+.slider-row input[type="range"] { width: 100%; accent-color: var(--blue); }
+.slider-val { text-align: right; font-weight: 700; color: var(--blue); font-size: 11.5px; }
+
+@media (max-width: 1100px) {
+  .preview-layout { grid-template-columns: 1fr; }
+  .sidepanel { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sidepanel h3, .sidepanel .divider, .sidepanel .small, .sidepanel .fullspan { grid-column: 1 / -1; }
+}
+@media (max-width: 700px) {
+  body { padding: 10px; }
+  .top { padding: 15px; }
+  .topnote { display: none; }
+  .tabs { flex-direction: column; }
+  .panel { padding: 16px; }
+  .grid2 { grid-template-columns: 1fr; }
+  .preview-stage { padding: 8px; }
+  .sidepanel { display: block; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <div class="logo-mark" id="studioLogoMark">★</div>
+      <div>
+        <h1>Birthday Card Studio</h1>
+        <p>CORPORATE COMMUNICATIONS · CREATIVE TOOLKIT</p>
+      </div>
+    </div>
+    <div class="topnote">
+      BRAND COLOURS<br>
+      <b style="color:#c02222">#C02222</b> &nbsp;·&nbsp; <b style="color:#0096db">#0096DB</b>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab" id="leaderTab" onclick="switchTab('leader')">
+      <span class="num">01</span>
+      <span><strong>Senior Leader</strong><small>Manual details · Single premium design</small></span>
+    </button>
+    <button class="tab employee active" id="employeeTab" onclick="switchTab('employee')">
+      <span class="num">02</span>
+      <span><strong>All Employees</strong><small>CSV upload · Centered group birthday emailer</small></span>
+    </button>
+  </div>
+
+  <!-- =========================================================
+       TAB 01: SENIOR LEADER
+       ========================================================= -->
+  <section id="leaderSection" style="display:none">
+    <div class="panel">
+      <div class="section-title">
+        <div>
+          <span class="step">SENIOR LEADER · MANUAL ENTRY</span>
+          <h2>Create a leadership birthday emailer</h2>
+          <p>Enter the details for one leader, upload their portrait and optionally place your brand logo on top.</p>
+        </div>
+        <span class="badge">ONE PERSON</span>
+      </div>
+      <div class="grid2">
+        <div>
+          <div class="field"><label>Full name *</label><input id="leaderName" placeholder="e.g. Kishore Rawat"></div>
+          <div class="field"><label>Designation</label><input id="leaderDesignation" placeholder="e.g. Managing Director"></div>
+          <div class="field"><label>Department</label><input id="leaderDepartment" placeholder="e.g. Corporate Communications"></div>
+          <div class="field"><label>Division</label><input id="leaderDivision" placeholder="e.g. Head Office"></div>
+          <div class="field"><label>Birthday date (optional)</label><input id="leaderDate" placeholder="e.g. 24 November 2026"></div>
+          <div class="field"><label>Top subtitle (optional)</label><input id="leaderKicker" value="CELEBRATING LEADERSHIP" oninput="generateLeader(true)"></div>
+          <div class="field"><label>Personalised message</label><input id="leaderMessage" value="Wishing you continued success, happiness and good health."></div>
+        </div>
+        <div>
+          <label class="uploadbox" for="leaderPhoto">
+            <span class="ico">📸</span>
+            <strong>Upload leader photograph</strong>
+            <small>JPG, JPEG or PNG · Portrait ratio fitted cleanly without stretching</small>
+            <input id="leaderPhoto" type="file" accept="image/*">
+          </label>
+          <div id="leaderPhotoStatus" class="status"></div>
+          <div class="hint">
+            <b>Top Brand Logo:</b> You can upload your company logo in the customisation bar or leave clean top space to place your logo later.
+            <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn sm" type="button" onclick="$('brandLogoInput').click()">Upload Top Logo</button>
+              <button class="btn sm" type="button" onclick="clearBrandLogo()">Remove Top Logo</button>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn primary" onclick="generateLeader()">Generate leader design</button>
+            <button class="btn" onclick="clearLeader()">Clear form</button>
+          </div>
+          <div id="leaderStatus" class="status"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="section-title">
+        <div>
+          <span class="step">LEADERSHIP ARTWORK</span>
+          <h2>Live design preview</h2>
+          <p>High-resolution composition with clean portrait framing and top logo space.</p>
+        </div>
+        <button class="btn green" onclick="downloadLeader()">Download PNG</button>
+      </div>
+      <div class="preview-stage">
+        <div id="leaderArtwork" class="artboard senior-art">
+          <div class="senior-left" id="leaderImageFrame"><span style="color:#8c9aa5;font-weight:700">LEADER PHOTO</span></div>
+          <div class="senior-right">
+            <div id="leaderLogoSlot" class="senior-logo-slot reserved-empty"></div>
+            <div class="kicker" id="leaderPreviewKicker">CELEBRATING LEADERSHIP</div>
+            <h2>HAPPY<br>BIRTHDAY!</h2>
+            <div class="wish" id="leaderWish">Wishing you continued success, happiness and good health.</div>
+            <div class="personname" id="leaderPreviewName">Leader Name</div>
+            <div class="detail" id="leaderPreviewDesignation">Designation</div>
+            <div class="detail" id="leaderPreviewDepartment">Department: —</div>
+            <div class="detail" id="leaderPreviewDivision">Division: —</div>
+            <div class="accent"></div>
+          </div>
+          <div class="leader-footer">
+            <span id="leaderFooterLeft"></span>
+            <span id="leaderPreviewDate">CELEBRATING YOU</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       TAB 02: ALL EMPLOYEES
+       ========================================================= -->
+  <section id="employeeSection">
+    <div class="panel">
+      <div class="section-title">
+        <div>
+          <span class="step">ALL EMPLOYEES · BULK UPLOAD</span>
+          <h2>Upload employee database</h2>
+          <p>Upload your employee CSV list and photographs. Cards and photos automatically format into centered portrait cards.</p>
+        </div>
+        <span class="badge">BULK IMPORT</span>
+      </div>
+      <div class="hint" style="margin-top:0">
+        <b>CSV columns supported:</b> Employee Name, Employee Id, Official Email Id, Personal Mobile Number, Business Unit, Department Name, Designation Title, Office Location, and Date of Birth (optional). Columns can be in any order and empty rows are ignored.
+      </div>
+      <div class="grid2" style="margin-top:16px">
+        <label class="uploadbox" for="csvFile">
+          <span class="ico">📊</span>
+          <strong>Upload employee CSV</strong>
+          <small>Drop CSV here or click to browse</small>
+          <input id="csvFile" type="file" accept=".csv,text/csv">
+        </label>
+        <label class="uploadbox" for="photoFiles">
+          <span class="ico">📸</span>
+          <strong>Upload employee photographs</strong>
+          <small>Select all employee images together · filenames match Employee Id (e.g. 8234.jpg)</small>
+          <input id="photoFiles" type="file" multiple accept="image/*">
+          <input id="photoFolder" type="file" webkitdirectory directory multiple accept="image/*" style="display:none">
+        </label>
+      </div>
+      <div class="actions">
+        <button class="btn primary" onclick="$('csvFile').click()">Choose CSV file</button>
+        <button class="btn" onclick="$('photoFiles').click()">Choose photos</button>
+        <button class="btn" onclick="$('photoFolder').click()">Choose photo folder</button>
+        <button class="btn" onclick="downloadTemplate()">Download CSV template</button>
+      </div>
+      <div id="csvStatus" class="status"></div>
+      <div id="photoStatus" class="status"></div>
+      <div class="stats">
+        <div class="stat"><b id="empCount">0</b><span>Employees loaded</span></div>
+        <div class="stat"><b id="photoCount">0/0</b><span>Photos matched</span></div>
+        <div class="stat"><b id="gradeCount">0</b><span>Designation grades</span></div>
+      </div>
+
+      <div id="tableSection" style="display:none">
+        <div class="section-title">
+          <div>
+            <h2>Employee list · Drag to reorder</h2>
+            <p>Rename each photo with the Employee Id (e.g. 8234.jpg), or click any card photo below to upload/adjust individually.</p>
+          </div>
+          <button class="btn" onclick="resetOrder()">↺ Reset grade order</button>
+        </div>
+        <div class="tablewrap">
+          <table class="employee-table">
+            <thead>
+              <tr>
+                <th>↕</th>
+                <th>Employee Name</th>
+                <th>Employee ID</th>
+                <th>DOB</th>
+                <th>Department</th>
+                <th>Division</th>
+                <th>Phone (editable)</th>
+                <th>Email (editable)</th>
+                <th>Photo</th>
+              </tr>
+            </thead>
+            <tbody id="employeeRows"></tbody>
+          </table>
+        </div>
+        <div class="actions">
+          <button class="btn primary" onclick="generateEmployees()">Generate employee birthday designs</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="employeePreviewPanel" style="display:none">
+      <div class="section-title">
+        <div>
+          <span class="step">ALL EMPLOYEES · SINGLE-PAGE EMAILER</span>
+          <h2>Design preview &amp; export</h2>
+          <p>Centered header with top logo space and properly proportioned portrait photocards across 2, 3, or 4 columns.</p>
+        </div>
+        <span class="badge" id="employeePageBadge">SINGLE PAGE</span>
+      </div>
+
+      <div class="preview-layout">
+        <div>
+          <div class="preview-stage">
+            <div class="artboard design-classic" id="employeeArtwork">
+              <div class="art-hero" id="employeeHero">
+                <div class="ring-l1"></div>
+                <div class="ring-l2"></div>
+                <div class="ring-r1"></div>
+                <div class="ring-r2"></div>
+                <div class="hero-logo-slot reserved-empty" id="employeeLogoSlot"></div>
+                <h2 id="employeeHeadline">HAPPY BIRTHDAY!</h2><img id="headlineImagePreview" alt="Birthday headline" style="display:none;position:relative;z-index:1;max-width:960px;max-height:100px;object-fit:contain;margin:0 0 11px">
+                <p id="employeeWish">Wishing you a year filled with happiness, success and new achievements.</p>
+                <div id="employeeDateLabel" class="art-date"></div>
+              </div>
+              <div class="art-bluebar"></div>
+              <div class="art-body" id="employeeBody">
+                <div class="art-cards" id="employeeCards"></div>
+              </div>
+              <div class="art-footer centered" id="employeeFooter">
+                <span class="f-left" id="empFooterLeftSpan"></span>
+                <span class="f-right" id="empFooterRightSpan">CELEBRATING OUR PEOPLE</span>
+              </div>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn primary" onclick="downloadEmployeePage()">Download complete employee birthday artwork · PNG</button>
+          </div>
+          <div id="exportStatus" class="status"></div>
+        </div>
+
+        <aside class="sidepanel">
+          <h3>Top Logo &amp; Header</h3>
+          <input id="brandLogoInput" type="file" accept="image/*" style="display:none">
+          <div class="logo-box-mini fullspan">
+            <img id="brandLogoThumb" alt="Top Logo" style="display:none">
+            <div id="brandLogoEmptyText" class="small" style="margin-bottom:8px">
+              No logo uploaded yet — clean top space is reserved so you can place your logo on top or upload it right here.
+            </div>
+            <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
+              <button class="btn sm primary" type="button" onclick="$('brandLogoInput').click()">Upload Logo</button>
+              <button class="btn sm" type="button" id="clearLogoBtn" style="display:none" onclick="clearBrandLogo()">Remove</button>
+            </div>
+          </div>
+
+          <div class="field" id="logoSizeField" style="display:none">
+            <label>Logo height (<span id="logoSizeLabel">58</span> px)</label>
+            <input id="logoHeight" type="range" min="32" max="105" value="58" style="width:100%;accent-color:#0096db">
+          </div>
+          <div class="field" id="logoBgField" style="display:none">
+            <label>Logo backdrop</label>
+            <select id="logoBackdrop">
+              <option value="none" selected>Transparent (Direct on banner)</option>
+              <option value="pill">White Pill Badge</option>
+              <option value="card">White Rounded Box</option>
+            </select>
+          </div>
+          <label class="checkline fullspan" id="reserveSpaceWrap">
+            <input type="checkbox" id="reserveLogoSpace" checked>
+            <span>Reserve top space for logo when empty</span>
+          </label>
+
+          <div class="field">
+            <label>Header alignment</label>
+            <select id="heroAlign">
+              <option value="center" selected>Center aligned</option>
+              <option value="left">Left aligned</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Greeting headline</label>
+            <input id="empHeadline" value="HAPPY BIRTHDAY!">
+          </div>
+          <div class="field"><label>Headline font</label><select id="headlineFont">
+            <option value="sans">Modern bold</option><option value="georgia">Elegant serif</option><option value="trebuchet">Friendly rounded</option><option value="impact">Bold condensed</option><option value="cursive">Celebration script</option><option value="custom">Custom uploaded font</option>
+          </select></div>
+          <div class="field"><label>Upload custom font (TTF, OTF or WOFF)</label><input type="file" id="fontUpload" accept=".ttf,.otf,.woff,.woff2"><small>Loaded locally for the headline.</small></div>
+          <div class="field"><label>Headline size: <span id="headlineSizeLabel">54</span> px</label><input type="range" id="headlineSize" min="28" max="90" value="54"></div>
+          <div class="field"><label>Optional PNG headline (replaces text)</label><input type="file" id="headlineUpload" accept="image/png"><button class="btn sm" type="button" id="clearHeadline" style="display:none">Remove PNG headline</button><small>Use a transparent PNG for the best result.</small></div>
+          <div class="field">
+            <label>Greeting message</label>
+            <input id="empWish" value="Wishing you a year filled with happiness, success and new achievements.">
+          </div>
+          <div class="field">
+            <label>Birthday celebration date</label>
+            <input id="celebrationDate" type="date">
+          </div>
+
+          <div class="divider"></div>
+          <h3>Photocard &amp; Grid Layout</h3>
+          <div class="field">
+            <label>Design style</label>
+            <select id="designStyle">
+              <option value="classic" selected>01 · Corporate Classic</option>
+              <option value="celebration">02 · Colour Celebration</option>
+              <option value="industrial">03 · Industrial Edge</option>
+              <option value="minimal">04 · Minimal Elegant</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Grid columns</label>
+            <select id="columns">
+              <option value="2">2 columns (Centered portrait)</option>
+              <option value="3" selected>3 columns (Centered portrait)</option>
+              <option value="4">4 columns (Centered portrait)</option>
+            </select>
+          </div>
+          <div class="field"><label>Card width: <span id="cardWidthLabel">100</span>%</label><input type="range" id="cardWidth" min="70" max="100" value="100"></div>
+          <div class="field"><label>Card text size: <span id="cardTextLabel">100</span>%</label><input type="range" id="cardTextSize" min="90" max="160" value="100"></div>
+          <div class="field">
+            <label>Photo frame</label>
+            <select id="photoFrame">
+              <option value="rounded" selected>Portrait · Rounded</option>
+              <option value="square">Portrait · Classic</option>
+              <option value="circle">Circle Avatar</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Photo fit mode</label>
+            <select id="globalPhotoFit">
+              <option value="cover" selected>Fill portrait frame (No grey bars)</option>
+              <option value="contain">Fit full image inside frame</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Page background</label>
+            <select id="bgStyle">
+              <option value="soft" selected>Soft white</option>
+              <option value="dots">Blue dots</option>
+              <option value="lines">Diagonal lines</option>
+            </select>
+          </div>
+
+          <div class="divider"></div>
+          <h3>Footer &amp; Export Quality</h3>
+          <div class="field">
+            <label>Footer left text (optional)</label>
+            <input id="footerLeft" value="" placeholder="Leave blank or add company name">
+          </div>
+          <div class="field">
+            <label>Footer right / center text</label>
+            <input id="footerRight" value="CELEBRATING OUR PEOPLE">
+          </div>
+          <div class="field">
+            <label>Overall exported image width (pixels)</label>
+            <input id="exportWidth" type="number" min="400" max="4400" step="10" placeholder="Auto — use image quality below">
+            <small>Optional: for example, enter 1000. The entire image and its height resize proportionally; the layout does not stretch.</small>
+          </div>
+          <div class="field">
+            <label>Export image quality (when width is blank)</label>
+            <select id="quality">
+              <option value="2" selected>200% · High resolution (2200 px)</option>
+              <option value="1.5">150% · Medium (1650 px)</option>
+              <option value="1">100% · Standard (1100 px)</option>
+            </select>
+          </div>
+          <p class="small">
+            <b>Tip:</b> Click any employee photo in the preview to fine-tune zoom, drag position, or replace that photo. Export matches preview 1:1.
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- =========================================================
+     INTERACTIVE PHOTO ZOOM & POSITION EDITOR MODAL
+     ========================================================= -->
+<div class="modal-backdrop" id="photoModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="modalTitle">Adjust Employee Photo</h3>
+      <button class="modal-close" type="button" onclick="closePhotoModal()">✕</button>
+    </div>
+    <div class="crop-stage-wrap">
+      <div class="crop-viewport" id="cropViewport">
+        <img id="cropPreviewImg" alt="">
+      </div>
+      <span class="small" style="margin-top:8px">Drag inside the photo frame to reposition</span>
+    </div>
+    <div class="slider-row">
+      <span>Zoom</span>
+      <input type="range" id="cropZoom" min="100" max="260" value="100">
+      <span class="slider-val" id="cropZoomVal">100%</span>
+    </div>
+    <div class="slider-row">
+      <span>Horizontal (X)</span>
+      <input type="range" id="cropX" min="-100" max="100" value="0">
+      <span class="slider-val" id="cropXVal">0</span>
+    </div>
+    <div class="slider-row">
+      <span>Vertical (Y)</span>
+      <input type="range" id="cropY" min="-100" max="100" value="0">
+      <span class="slider-val" id="cropYVal">0</span>
+    </div>
+    <div class="field" style="margin-top:8px">
+      <label>Individual fit override</label>
+      <select id="cropFit">
+        <option value="auto">Use global fit setting</option>
+        <option value="cover">Fill portrait frame (No grey bars)</option>
+        <option value="contain">Fit full photo</option>
+      </select>
+    </div>
+    <input type="file" id="singlePhotoInput" accept="image/*" style="display:none">
+    <div class="actions" style="justify-content:space-between;margin-top:16px">
+      <div style="display:flex;gap:8px">
+        <button class="btn sm" type="button" onclick="$('singlePhotoInput').click()">Upload / Replace photo</button>
+        <button class="btn sm" type="button" onclick="resetCurrentCrop()">Reset</button>
+      </div>
+      <button class="btn sm primary" type="button" onclick="savePhotoModal()">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   STATE & UTILITIES
+   ========================================================= */
+let leaderImageURL = null,
+    leaderImageNatural = null,
+    brandLogoURL = null,
+    brandLogoNatural = null,
+    employees = [],
+    originalEmployees = [],
+    photoMap = {},          // keyed by normalized Employee ID -> { url, w, h }
+    photoOverrides = {},    // keyed by employee _uid -> { url, w, h }
+    photoAdjust = {},       // keyed by employee _uid -> { zoom, x, y, fit }
+    pages = [],
+    editingUid = null, headlineImageURL = null, headlineImageNatural = null;
+
+const $ = id => document.getElementById(id);
+
+function safeStorageGet(k) {
+  try { return localStorage.getItem(k); } catch (e) { return null; }
+}
+function safeStorageSet(k, v) {
+  try {
+    if (v === null) localStorage.removeItem(k);
+    else localStorage.setItem(k, v);
+  } catch (e) {}
+}
+
+function switchTab(which) {
+  $('leaderSection').style.display = which === 'leader' ? 'block' : 'none';
+  $('employeeSection').style.display = which === 'employee' ? 'block' : 'none';
+  $('leaderTab').classList.toggle('active', which === 'leader');
+  $('employeeTab').classList.toggle('active', which === 'employee');
+}
+
+function status(id, msg, type = 'ok') {
+  const e = $(id);
+  if (!e) return;
+  e.textContent = msg;
+  e.className = 'status show ' + (type === 'err' ? 'err' : 'ok');
+}
+
+function esc(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+function readDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+function loadImg(src) {
+  return new Promise((res, rej) => {
+    const im = new Image();
+    im.onload = () => res(im);
+    im.onerror = rej;
+    im.src = src;
+  });
+}
+
+async function readImageRecord(file) {
+  const url = await readDataURL(file);
+  const im = await loadImg(url);
+  return { url, w: im.naturalWidth || im.width, h: im.naturalHeight || im.height };
+}
+
+/* =========================================================
+   COLUMN & PHOTO GEOMETRY (UNIFIED 1100PX BASE SYSTEM)
+   Prevents card & photo stretching across 2, 3, and 4 cols!
+   ========================================================= */
+function getLayoutSpec(cols, frame) {
+  const spec = cols === 2
+    ? { cols: 2, cardW: 280, gap: 32, photoW: 192, photoH: 256, circleSize: 188, nameSize: 19.5, metaSize: 13 }
+    : cols === 4
+    ? { cols: 4, cardW: 230, gap: 20, photoW: 156, photoH: 208, circleSize: 156, nameSize: 17, metaSize: 12 }
+    : { cols: 3, cardW: 258, gap: 26, photoW: 174, photoH: 232, circleSize: 174, nameSize: 18.5, metaSize: 12.5 };
+
+  const widthScale = (+$('cardWidth').value || 100) / 100;
+  const textScale = (+$('cardTextSize').value || 100) / 100;
+  spec.cardW = Math.round(spec.cardW * widthScale);
+  spec.photoW = Math.min(spec.photoW, spec.cardW - 36);
+  spec.photoH = spec.photoW * 4 / 3;
+  spec.circleSize = Math.min(spec.circleSize, spec.cardW - 36);
+  spec.nameSize *= textScale; spec.metaSize *= textScale;
+  const pw = frame === 'circle' ? spec.circleSize : spec.photoW;
+  const ph = frame === 'circle' ? spec.circleSize : spec.photoH;
+  const radius = frame === 'circle' ? pw / 2 : (frame === 'rounded' ? 12 : 4);
+  const maxGridW = spec.cols * spec.cardW + (spec.cols - 1) * spec.gap;
+  return { ...spec, pw, ph, radius, maxGridW };
+}
+
+/* Exact non-stretching image placement shared by Preview, Modal & Canvas Export */
+function computePhotoPlacement(iw, ih, pw, ph, adj, globalFit) {
+  if (!iw || !ih) return { dw: pw, dh: ph, dx: 0, dy: 0 };
+  const fit = (!adj || !adj.fit || adj.fit === 'auto') ? (globalFit || 'cover') : adj.fit;
+  const zoom = ((adj && adj.zoom) ? adj.zoom : 100) / 100;
+  const panX = (adj && adj.x) ? adj.x : 0; // -100 .. +100
+  const panY = (adj && adj.y) ? adj.y : 0; // -100 .. +100
+
+  const baseScale = fit === 'contain'
+    ? Math.min(pw / iw, ph / ih)
+    : Math.max(pw / iw, ph / ih);
+
+  const dw = iw * baseScale * zoom;
+  const dh = ih * baseScale * zoom;
+
+  // Portrait bias (16% from top) when filling frame so hair/forehead never clip
+  const defaultAnchorY = fit === 'contain' ? 0.5 : 0.16;
+  const dx = (pw - dw) * 0.5 + (panX / 100) * (pw * 0.65);
+  const dy = (ph - dh) * defaultAnchorY + (panY / 100) * (ph * 0.65);
+
+  return { dw, dh, dx, dy, fit };
+}
+
+/* =========================================================
+   TOP BRAND LOGO MANAGEMENT
+   ========================================================= */
+async function setBrandLogoFromDataURL(url) {
+  if (!url) return;
+  try {
+    const im = await loadImg(url);
+    brandLogoURL = url;
+    brandLogoNatural = { w: im.naturalWidth || im.width, h: im.naturalHeight || im.height };
+    safeStorageSet('birthdayStudioBrandLogo', url);
+    updateBrandLogoUI();
+    renderEmployeeCards();
+    renderLeaderLogo();
+  } catch (e) {}
+}
+
+function clearBrandLogo() {
+  brandLogoURL = null;
+  brandLogoNatural = null;
+  $('brandLogoInput').value = '';
+  safeStorageSet('birthdayStudioBrandLogo', null);
+  updateBrandLogoUI();
+  renderEmployeeCards();
+  renderLeaderLogo();
+}
+
+function updateBrandLogoUI() {
+  const has = !!brandLogoURL;
+  $('brandLogoThumb').style.display = has ? 'block' : 'none';
+  if (has) $('brandLogoThumb').src = brandLogoURL;
+  $('brandLogoEmptyText').style.display = has ? 'none' : 'block';
+  $('clearLogoBtn').style.display = has ? 'inline-block' : 'none';
+  $('logoSizeField').style.display = has ? 'block' : 'none';
+  $('logoBgField').style.display = has ? 'block' : 'none';
+  $('reserveSpaceWrap').style.display = has ? 'none' : 'flex';
+  $('studioLogoMark').innerHTML = has ? `<img src="${brandLogoURL}" alt="Logo">` : '★';
+}
+
+$('brandLogoInput').addEventListener('change', async e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const url = await readDataURL(f);
+  await setBrandLogoFromDataURL(url);
+});
+
+$('logoHeight').addEventListener('input', () => {
+  $('logoSizeLabel').textContent = $('logoHeight').value;
+  renderEmployeeCards();
+  renderLeaderLogo();
+});
+$('logoBackdrop').addEventListener('change', () => {
+  renderEmployeeCards();
+  renderLeaderLogo();
+});
+$('reserveLogoSpace').addEventListener('change', () => {
+  renderEmployeeCards();
+  renderLeaderLogo();
+});
+
+function renderHeroLogoSlot(slotEl, maxHOverride) {
+  if (!slotEl) return;
+  const h = maxHOverride || (+$('logoHeight').value || 58);
+  const backdrop = $('logoBackdrop').value || 'pill';
+  const reserve = $('reserveLogoSpace').checked;
+
+  if (brandLogoURL) {
+    slotEl.className = slotEl.id === 'leaderLogoSlot' ? 'senior-logo-slot' : 'hero-logo-slot';
+    const wrapCls = backdrop === 'pill' ? 'hero-logo-wrap pill' : backdrop === 'card' ? 'hero-logo-wrap card' : 'hero-logo-wrap';
+    slotEl.innerHTML = `<div class="${wrapCls}"><img src="${brandLogoURL}" style="height:${h}px" alt="Logo"></div>`;
+  } else if (reserve) {
+    slotEl.className = (slotEl.id === 'leaderLogoSlot' ? 'senior-logo-slot' : 'hero-logo-slot') + ' reserved-empty';
+    slotEl.innerHTML = '';
+  } else {
+    slotEl.className = (slotEl.id === 'leaderLogoSlot' ? 'senior-logo-slot' : 'hero-logo-slot') + ' hidden';
+    slotEl.innerHTML = '';
+  }
+}
+
+/* =========================================================
+   CSV PARSING & GRADE SORTING
+   ========================================================= */
+function norm(s) {
+  return String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function parseCSVLine(line) {
+  let out = [], v = '', q = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"' && line[i + 1] === '"') { v += '"'; i++; }
+    else if (c === '"') q = !q;
+    else if (c === ',' && !q) { out.push(v); v = ''; }
+    else v += c;
+  }
+  out.push(v);
+  return out.map(x => x.trim());
+}
+
+function parseCSV(text) {
+  const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter(x => x.trim());
+  if (lines.length < 2) return [];
+  const headers = parseCSVLine(lines.shift()).map(norm);
+  const ix = {
+    name: headers.findIndex(x => ['employeename', 'name'].includes(x)),
+    id: headers.findIndex(x => ['employeeid', 'empid'].includes(x)),
+    email: headers.findIndex(x => ['officialemailid', 'email', 'emailaddress'].includes(x)),
+    phone: headers.findIndex(x => ['personalmobilenumber', 'mobilenumber', 'phone'].includes(x)),
+    unit: headers.findIndex(x => ['businessunit', 'division', 'unit'].includes(x)),
+    department: headers.findIndex(x => ['departmentname', 'department'].includes(x)),
+    designation: headers.findIndex(x => ['designationtitle', 'designation'].includes(x)),
+    location: headers.findIndex(x => ['officelocation', 'location'].includes(x)),
+    dob: headers.findIndex(x => ['dateofbirth', 'dob', 'birthday'].includes(x))
+  };
+  const missing = [];
+  if (ix.name < 0) missing.push('Employee Name');
+  if (ix.id < 0) missing.push('Employee Id');
+  if (missing.length) {
+    status('csvStatus', 'Missing required columns: ' + missing.join(', '), 'err');
+    return [];
+  }
+  return lines.map((line, idx) => {
+    const v = parseCSVLine(line);
+    const get = k => ix[k] >= 0 ? (v[ix[k]] || '').trim() : '';
+    return {
+      _uid: 'emp_' + idx + '_' + Date.now(),
+      name: get('name'),
+      id: get('id'),
+      email: get('email'),
+      phone: get('phone'),
+      unit: get('unit'),
+      department: get('department'),
+      designation: get('designation'),
+      location: get('location'),
+      dob: get('dob')
+    };
+  }).filter(e => e.name && e.id);
+}
+
+const gradeOrder = {
+  "G6C":100,"G6B":99,"G6A":98,"G5B":97,"G5A":96,"G4C":95,"G4B":94,"G4A":93,
+  "G3D":92,"G3C":91,"G3B":90,"G3A":89,"G2G":88,"G2F":87,"G2E":86,"G2D":85,
+  "G2C":84,"G2B":83,"G2A":82,"G1D":81,"G1C":80,"G1B":79,"G1A":78,"G0B":77,"G0A":76
+};
+const designationToGrade = {
+  "Managing Director":"G6C","Joint Managing Director":"G6B","Whole Time Director":"G6A",
+  "Chief Executive of Businesses":"G5B","Chief of Functions":"G5B","Advisor":"G5B",
+  "Business Head":"G5A","Senior Vice President":"G4C","Vice President":"G4B",
+  "Associate Vice President":"G4A","Functional Head":"G4A","General Manager":"G3D",
+  "Deputy General Manager":"G3C","Assistant General Manager":"G3B","Senior Manager":"G3A",
+  "Manager":"G2G","Deputy Manager":"G2F","Assistant Manager":"G2E","Senior Engineer":"G2D",
+  "Senior Officer":"G2D","Engineer":"G2C","Officer I":"G2C","Graduate Engineer Trainee":"G2B",
+  "Management Trainee":"G2B","Officer II":"G2B","Officer III":"G2A","Design Associate I":"G1D",
+  "Assistant Officer":"G1D","Assistant Engineer":"G1D","Design Associate II":"G1C",
+  "Junior Officer":"G1C","Junior Engineer":"G1C","Diploma Engineer Trainee":"G1C",
+  "Senior Draughtsman":"G1C","Design Associate III":"G1B","Supervisor":"G1B",
+  "Assistant":"G1B","Teacher":"G1B","Draughtsman":"G1B","Junior Draughtsman":"G1A",
+  "Design Associate IV":"G1A","Assistant Supervisor":"G1A","Junior Assistant":"G1A",
+  "Office Assistant":"G0B","ITI Trainee":"G0B","Workmen - I":"G0B","Workmen - II":"G0A"
+};
+
+function gradeOf(des) {
+  const d = String(des || '').trim();
+  if (designationToGrade[d]) return designationToGrade[d];
+  const k = Object.keys(designationToGrade).find(k => d.toLowerCase().includes(k.toLowerCase()));
+  return k ? designationToGrade[k] : 'G0A';
+}
+
+function sortByGrade(a) {
+  return [...a].sort((x, y) => gradeOrder[gradeOf(y.designation)] - gradeOrder[gradeOf(x.designation)]);
+}
+
+function photoKey(v) {
+  return String(v || '').replace(/\.[^.]+$/, '').trim().toUpperCase().replace(/[\s_-]+/g, '');
+}
+
+function photoRecordFor(e) {
+  if (!e) return null;
+  return photoOverrides[e._uid] || photoMap[photoKey(e.id)] || null;
+}
+
+async function loadPhotoFiles(fileList) {
+  const files = [...fileList].filter(f => f.type.startsWith('image/'));
+  for (const f of files) {
+    const base = f.name.replace(/\.[^.]+$/, '');
+    try {
+      photoMap[photoKey(base)] = await readImageRecord(f);
+    } catch (err) {}
+  }
+  updatePhotoCount();
+  renderEmployeeTable();
+  if (pages.length) renderEmployeeCards();
+  status('photoStatus', `${files.length} photograph(s) loaded and matched against Employee Id.`);
+}
+
+$('csvFile').addEventListener('change', async e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const data = parseCSV(await f.text());
+  if (!data.length) {
+    status('csvStatus', 'No valid employee records found. Check the CSV headers.', 'err');
+    return;
+  }
+  originalEmployees = data.map(x => ({ ...x }));
+  employees = sortByGrade(data);
+  photoOverrides = {};
+  photoAdjust = {};
+  renderEmployeeTable();
+  $('tableSection').style.display = 'block';
+  $('empCount').textContent = employees.length;
+  $('gradeCount').textContent = new Set(employees.map(emp => gradeOf(emp.designation))).size;
+  updatePhotoCount();
+  generateEmployees();
+  status('csvStatus', `${employees.length} employee records loaded. Drag rows to reorder or customise the design below.`);
+});
+
+$('photoFiles').addEventListener('change', async e => {
+  photoMap = {};
+  await loadPhotoFiles(e.target.files);
+});
+$('photoFolder').addEventListener('change', async e => {
+  photoMap = {};
+  await loadPhotoFiles(e.target.files);
+});
+
+function updatePhotoCount() {
+  const n = employees.filter(e => photoRecordFor(e)).length;
+  $('photoCount').textContent = n + '/' + employees.length;
+}
+
+function renderEmployeeTable() {
+  const tb = $('employeeRows');
+  tb.innerHTML = employees.map((e, i) => `
+    <tr draggable="true" data-i="${i}">
+      <td style="color:#0096db;font-weight:700">⋮⋮</td>
+      <td><b>${esc(e.name)}</b></td>
+      <td>${esc(e.id)}</td>
+      <td>${esc(e.dob || '—')}</td>
+      <td>${esc(e.department || '—')}</td>
+      <td>${esc(e.unit || '—')}</td>
+      <td><input aria-label="Phone for ${esc(e.name)}" data-contact="phone" value="${esc(e.phone || '')}" placeholder="Phone" style="min-width:130px"></td>
+      <td><input aria-label="Email for ${esc(e.name)}" data-contact="email" value="${esc(e.email || '')}" placeholder="Email" style="min-width:170px"></td>
+      <td>${photoRecordFor(e) ? '<span style="color:#1f8b4c;font-weight:700">✓ Matched</span>' : '<span style="color:#8c9aa6">— Missing</span>'}</td>
+    </tr>
+  `).join('');
+
+  tb.querySelectorAll('[data-contact]').forEach(input => {
+    input.addEventListener('input', () => {
+      const emp = employees[+input.closest('tr').dataset.i];
+      emp[input.dataset.contact] = input.value;
+      const original = originalEmployees.find(e => e._uid === emp._uid);
+      if (original) original[input.dataset.contact] = input.value;
+      renderEmployeeCards();
+    });
+    input.addEventListener('mousedown', e => e.stopPropagation());
+    input.addEventListener('dragstart', e => e.stopPropagation());
+  });
+  let from = null;
+  tb.querySelectorAll('tr').forEach(row => {
+    row.addEventListener('dragstart', () => { from = +row.dataset.i; row.classList.add('dragging'); });
+    row.addEventListener('dragend', () => row.classList.remove('dragging'));
+    row.addEventListener('dragover', ev => { ev.preventDefault(); row.classList.add('drag-over'); });
+    row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+    row.addEventListener('drop', ev => {
+      ev.preventDefault();
+      row.classList.remove('drag-over');
+      const to = +row.dataset.i;
+      if (from === null || from === to) return;
+      const [m] = employees.splice(from, 1);
+      employees.splice(to, 0, m);
+      buildPages();
+      renderEmployeeTable();
+      renderEmployeeCards();
+    });
+  });
+}
+
+function resetOrder() {
+  employees = sortByGrade(originalEmployees);
+  buildPages();
+  renderEmployeeTable();
+  renderEmployeeCards();
+}
+
+function buildPages() {
+  pages = employees.length ? [{ items: [...employees] }] : [];
+}
+
+function generateEmployees() {
+  if (!employees.length) {
+    status('csvStatus', 'Upload your employee CSV first.', 'err');
+    return;
+  }
+  buildPages();
+  $('employeePreviewPanel').style.display = 'block';
+  renderEmployeeCards();
+  $('employeePreviewPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* =========================================================
+   LIVE PREVIEW RENDERING (ALL EMPLOYEES)
+   ========================================================= */
+function formatCelebrationDate(rawDate) {
+  if (!rawDate) return '';
+  const d = new Date(rawDate + 'T00:00:00');
+  if (isNaN(d)) return '';
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
+}
+
+function applyArtboardBackground() {
+  const bg = $('bgStyle').value || 'soft';
+  const art = $('employeeArtwork');
+  if (bg === 'dots') {
+    art.style.background = 'radial-gradient(#0096db2b 1.3px, transparent 1.3px) 0 0 / 20px 20px, #ffffff';
+  } else if (bg === 'lines') {
+    art.style.background = 'repeating-linear-gradient(135deg, #eef7fc 0 2px, #ffffff 2px 14px)';
+  } else {
+    art.style.background = '#ffffff';
+  }
+}
+
+function renderEmployeeCards() {
+  const style = $('designStyle').value || 'classic';
+  const cols = +$('columns').value || 3;
+  const frame = $('photoFrame').value || 'rounded';
+  const globalFit = $('globalPhotoFit').value || 'cover';
+  const heroAlign = $('heroAlign').value || 'center';
+  const spec = getLayoutSpec(cols, frame);
+
+  $('employeeArtwork').className = 'artboard design-' + style;
+  $('employeeHero').className = 'art-hero' + (heroAlign === 'left' ? ' align-left' : '');
+  applyArtboardBackground();
+
+  renderHeroLogoSlot($('employeeLogoSlot'));
+
+  $('employeeHeadline').textContent = $('empHeadline').value || 'HAPPY BIRTHDAY!';
+  $('employeeHeadline').style.fontFamily = headlineFontFamily();
+  $('employeeHeadline').style.fontSize = $('headlineSize').value + 'px';
+  $('employeeHeadline').style.display = headlineImageURL ? 'none' : '';
+  const headlineImg = $('headlineImagePreview');
+  headlineImg.style.display = headlineImageURL ? 'block' : 'none';
+  if (headlineImageURL) headlineImg.src = headlineImageURL;
+  $('employeeWish').textContent = $('empWish').value || '';
+  $('employeeDateLabel').textContent = formatCelebrationDate($('celebrationDate').value);
+
+  // Footer
+  const fLeft = ($('footerLeft').value || '').trim();
+  const fRight = ($('footerRight').value || '').trim();
+  const footerEl = $('employeeFooter');
+  if (!fLeft && !fRight) {
+    footerEl.style.display = 'none';
+  } else {
+    footerEl.style.display = 'flex';
+    $('empFooterLeftSpan').textContent = fLeft;
+    $('empFooterRightSpan').textContent = fRight;
+    $('empFooterLeftSpan').style.display = fLeft ? 'inline' : 'none';
+    $('empFooterRightSpan').style.display = fRight ? 'inline' : 'none';
+    footerEl.className = 'art-footer' + ((!fLeft || !fRight) ? ' centered' : '');
+  }
+
+  const cardsContainer = $('employeeCards');
+  cardsContainer.style.maxWidth = spec.maxGridW + 'px';
+  cardsContainer.style.gap = spec.gap + 'px';
+
+  if (!pages.length || !pages[0].items.length) {
+    cardsContainer.innerHTML = '<p style="padding:30px;color:#71808c">No employee records loaded. Upload your employee CSV above.</p>';
+    return;
+  }
+
+  const people = pages[0].items;
+  $('employeePageBadge').textContent = `${people.length} EMPLOYEES · ${cols} COL`;
+
+  cardsContainer.innerHTML = people.map(e => {
+    const rec = photoRecordFor(e);
+    const adj = photoAdjust[e._uid] || null;
+    const initials = esc(e.name.trim().split(/\s+/).map(x => x[0] || '').join('').slice(0, 2).toUpperCase());
+    let imgHtml = initials;
+    if (rec) {
+      const p = computePhotoPlacement(rec.w, rec.h, spec.pw, spec.ph, adj, globalFit);
+      imgHtml = `<img src="${rec.url}" alt="${esc(e.name)}" style="width:${p.dw.toFixed(2)}px;height:${p.dh.toFixed(2)}px;left:${p.dx.toFixed(2)}px;top:${p.dy.toFixed(2)}px">`;
+    }
+    return `
+      <div class="emp-card" style="width:${spec.cardW}px">
+        <div class="emp-photo" data-uid="${esc(e._uid)}" title="Click to adjust zoom, position or replace photo"
+             style="width:${spec.pw}px;height:${spec.ph}px;border-radius:${spec.radius}px">
+          ${imgHtml}
+        </div>
+        <h3 style="font-size:${spec.nameSize}px">${esc(e.name)}</h3>
+        <div class="emp-meta-line"></div>
+        ${[e.department, e.unit, e.phone, e.email].filter(Boolean).map(value => `<p style="font-size:${spec.metaSize}px;overflow-wrap:anywhere">${esc(value)}</p>`).join('')}
+      </div>
+    `;
+  }).join('');
+
+  cardsContainer.querySelectorAll('[data-uid]').forEach(el => {
+    el.addEventListener('click', () => openPhotoModal(el.dataset.uid));
+  });
+}
+
+[
+  'celebrationDate', 'designStyle', 'columns', 'photoFrame',
+  'globalPhotoFit', 'bgStyle', 'heroAlign'
+].forEach(id => $(id).addEventListener('change', renderEmployeeCards));
+
+function headlineFontFamily() {
+  return ({sans:'"Segoe UI", Tahoma, Arial, sans-serif', georgia:'Georgia, serif', trebuchet:'"Trebuchet MS", sans-serif', impact:'Impact, "Arial Narrow", sans-serif', cursive:'"Brush Script MT", cursive', custom:'"BirthdayCustom", sans-serif'})[$('headlineFont').value];
+}
+$('headlineFont').addEventListener('change', renderEmployeeCards);
+$('fontUpload').addEventListener('change', async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try { const face = new FontFace('BirthdayCustom', await f.arrayBuffer()); await face.load(); document.fonts.add(face); $('headlineFont').value = 'custom'; renderEmployeeCards(); }
+  catch(err) { status('exportStatus', 'Could not load this font. Please choose a valid TTF, OTF or WOFF font.', 'err'); }
+});
+$('headlineUpload').addEventListener('change', async e => {
+  const f=e.target.files[0]; if (!f) return;
+  try { const record=await readImageRecord(f); headlineImageURL=record.url; headlineImageNatural=record; $('clearHeadline').style.display='inline-block'; renderEmployeeCards(); }
+  catch(err) { status('exportStatus', 'Could not load the PNG headline.', 'err'); }
+});
+$('clearHeadline').addEventListener('click', () => { headlineImageURL=null; headlineImageNatural=null; $('headlineUpload').value=''; $('clearHeadline').style.display='none'; renderEmployeeCards(); });
+[['headlineSize','headlineSizeLabel'],['cardWidth','cardWidthLabel'],['cardTextSize','cardTextLabel']].forEach(([id,label]) => $(id).addEventListener('input', () => { $(label).textContent=$(id).value; renderEmployeeCards(); }));
+['empHeadline', 'empWish', 'footerLeft', 'footerRight'].forEach(id => {
+  $(id).addEventListener('input', renderEmployeeCards);
+});
+
+/* =========================================================
+   INTERACTIVE PHOTO EDITOR MODAL (ZOOM, DRAG PAN & REPLACE)
+   ========================================================= */
+function openPhotoModal(uid) {
+  const emp = employees.find(x => x._uid === uid);
+  if (!emp) return;
+  editingUid = uid;
+  $('modalTitle').textContent = `Photo Editor · ${emp.name}`;
+
+  const cur = photoAdjust[uid] || { zoom: 100, x: 0, y: 0, fit: 'auto' };
+  $('cropZoom').value = cur.zoom || 100;
+  $('cropX').value = cur.x || 0;
+  $('cropY').value = cur.y || 0;
+  $('cropFit').value = cur.fit || 'auto';
+
+  const frame = $('photoFrame').value || 'rounded';
+  const vp = $('cropViewport');
+  if (frame === 'circle') {
+    vp.style.width = '196px';
+    vp.style.height = '196px';
+    vp.style.borderRadius = '50%';
+  } else {
+    vp.style.width = '186px';
+    vp.style.height = '248px';
+    vp.style.borderRadius = frame === 'rounded' ? '12px' : '4px';
+  }
+
+  updateModalPreview();
+  $('photoModal').classList.add('open');
+}
+
+function updateModalPreview() {
+  if (!editingUid) return;
+  const emp = employees.find(x => x._uid === editingUid);
+  const rec = photoRecordFor(emp);
+  const vp = $('cropViewport');
+  const img = $('cropPreviewImg');
+
+  $('cropZoomVal').textContent = $('cropZoom').value + '%';
+  $('cropXVal').textContent = $('cropX').value;
+  $('cropYVal').textContent = $('cropY').value;
+
+  if (!rec) {
+    img.style.display = 'none';
+    return;
+  }
+  img.style.display = 'block';
+  img.src = rec.url;
+
+  const pw = vp.clientWidth || 186;
+  const ph = vp.clientHeight || 248;
+  const tempAdj = {
+    zoom: +$('cropZoom').value,
+    x: +$('cropX').value,
+    y: +$('cropY').value,
+    fit: $('cropFit').value
+  };
+  const p = computePhotoPlacement(rec.w, rec.h, pw, ph, tempAdj, $('globalPhotoFit').value);
+  img.style.width = p.dw + 'px';
+  img.style.height = p.dh + 'px';
+  img.style.left = p.dx + 'px';
+  img.style.top = p.dy + 'px';
+}
+
+['cropZoom', 'cropX', 'cropY'].forEach(id => $(id).addEventListener('input', updateModalPreview));
+$('cropFit').addEventListener('change', updateModalPreview);
+
+// Drag inside modal viewport to pan photo smoothly
+(function setupModalDrag() {
+  const vp = $('cropViewport');
+  let dragging = false, startX = 0, startY = 0, origX = 0, origY = 0;
+
+  const start = (cx, cy) => {
+    dragging = true;
+    startX = cx;
+    startY = cy;
+    origX = +$('cropX').value;
+    origY = +$('cropY').value;
+  };
+  const move = (cx, cy) => {
+    if (!dragging) return;
+    const dx = cx - startX;
+    const dy = cy - startY;
+    $('cropX').value = Math.max(-100, Math.min(100, Math.round(origX + (dx / 120) * 100)));
+    $('cropY').value = Math.max(-100, Math.min(100, Math.round(origY + (dy / 140) * 100)));
+    updateModalPreview();
+  };
+  const end = () => { dragging = false; };
+
+  vp.addEventListener('mousedown', e => { e.preventDefault(); start(e.clientX, e.clientY); });
+  window.addEventListener('mousemove', e => move(e.clientX, e.clientY));
+  window.addEventListener('mouseup', end);
+
+  vp.addEventListener('touchstart', e => {
+    if (e.touches[0]) start(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  window.addEventListener('touchmove', e => {
+    if (e.touches[0]) move(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  window.addEventListener('touchend', end);
+})();
+
+$('singlePhotoInput').addEventListener('change', async e => {
+  const f = e.target.files[0];
+  if (!f || !editingUid) return;
+  photoOverrides[editingUid] = await readImageRecord(f);
+  e.target.value = '';
+  updatePhotoCount();
+  renderEmployeeTable();
+  updateModalPreview();
+  renderEmployeeCards();
+});
+
+function resetCurrentCrop() {
+  $('cropZoom').value = 100;
+  $('cropX').value = 0;
+  $('cropY').value = 0;
+  $('cropFit').value = 'auto';
+  updateModalPreview();
+}
+
+function savePhotoModal() {
+  if (editingUid) {
+    photoAdjust[editingUid] = {
+      zoom: +$('cropZoom').value,
+      x: +$('cropX').value,
+      y: +$('cropY').value,
+      fit: $('cropFit').value
+    };
+    renderEmployeeCards();
+  }
+  closePhotoModal();
+}
+
+function closePhotoModal() {
+  $('photoModal').classList.remove('open');
+  editingUid = null;
+}
+
+/* =========================================================
+   CANVAS HELPERS FOR PIXEL-PERFECT HIGH-RES PNG EXPORT
+   ========================================================= */
+function roundedRectPath(ctx, x, y, w, h, r) {
+  const rr = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + rr, y);
+  ctx.arcTo(x + w, y, x + w, y + h, rr);
+  ctx.arcTo(x + w, y + h, x, y + h, rr);
+  ctx.arcTo(x, y + h, x, y, rr);
+  ctx.arcTo(x, y, x + w, y, rr);
+  ctx.closePath();
+}
+
+function wrapLines(ctx, text, maxWidth, maxLines = 4) {
+  const raw = String(text || '').trim();
+  if (!raw) return [];
+  const words = raw.split(/\s+/);
+  const lines = [];
+  let line = '';
+  for (const w of words) {
+    const test = line ? line + ' ' + w : w;
+    if (ctx.measureText(w).width > maxWidth) {
+      if (line) { lines.push(line); line = ''; }
+      for (const ch of w) { if (line && ctx.measureText(line + ch).width > maxWidth) { lines.push(line); line = ''; } line += ch; }
+    } else if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line);
+      line = w;
+    } else {
+      line = test;
+    }
+  }
+  if (line) lines.push(line);
+  return lines.slice(0, maxLines);
+}
+
+/* =========================================================
+   ALL EMPLOYEES PNG EXPORT (UNIFIED 1100PX * QUALITY SCALE)
+   Matches Live Preview 1:1 — Centered Header, Top Logo,
+   Non-Stretching Portrait Cards & Centered Incomplete Rows!
+   ========================================================= */
+async function canvasForEmployees(people) {
+  const W = 1100;
+  const requestedWidth = +$('exportWidth').value;
+  const scale = requestedWidth ? Math.max(400, Math.min(4400, requestedWidth)) / W : (+$('quality').value || 2);
+  const style = $('designStyle').value || 'classic';
+  const cols = +$('columns').value || 3;
+  const frame = $('photoFrame').value || 'rounded';
+  const globalFit = $('globalPhotoFit').value || 'cover';
+  const bgStyle = $('bgStyle').value || 'soft';
+  const heroAlign = $('heroAlign').value || 'center';
+  const spec = getLayoutSpec(cols, frame);
+
+  const measureCanvas = document.createElement('canvas');
+  const mctx = measureCanvas.getContext('2d');
+  const fontStack = '"Segoe UI", Tahoma, Arial, sans-serif';
+
+  // 1. Measure Hero Header dynamically
+  const logoH = +$('logoHeight').value || 58;
+  const logoBackdrop = $('logoBackdrop').value || 'pill';
+  const reserveLogo = $('reserveLogoSpace').checked;
+  let topSlotH = 0;
+  if (brandLogoURL && brandLogoNatural) {
+    topSlotH = (logoBackdrop === 'none' ? logoH : logoH + 16) + 14;
+  } else if (reserveLogo) {
+    topSlotH = 52 + 10;
+  }
+
+  const headlineText = $('empHeadline').value || 'HAPPY BIRTHDAY!';
+  const headFont = headlineFontFamily(), headSize = +$('headlineSize').value;
+  mctx.font = `800 ${headSize}px ${headFont}`;
+  const headLines = headlineImageURL ? [] : wrapLines(mctx, headlineText, 960, 2);
+  const headlineImageW = headlineImageNatural ? Math.min(960, headlineImageNatural.w * Math.min(1, 100 / headlineImageNatural.h)) : 0;
+  const headlineImageH = headlineImageNatural ? headlineImageW * headlineImageNatural.h / headlineImageNatural.w : 0;
+  const headLineH = Math.ceil(headSize * 1.06);
+
+  const wishText = $('empWish').value || '';
+  mctx.font = `400 18.5px ${fontStack}`;
+  const wishLines = wrapLines(mctx, wishText, 790, 3);
+
+  const dateText = formatCelebrationDate($('celebrationDate').value);
+
+  const heroPadTop = 34, heroPadBottom = 32;
+  let heroContentH = topSlotH + (headlineImageURL ? headlineImageH : headLines.length * headLineH) + (wishLines.length ? 8 + wishLines.length * 26 : 0) + (dateText ? 14 + 20 : 0);
+  const heroH = Math.max(230, heroPadTop + heroContentH + heroPadBottom);
+  const barH = style === 'industrial' ? 9 : 8;
+
+  // 2. Pre-measure each card's wrapped text so rows align cleanly & never overflow
+  const cardMetrics = people.map(e => {
+    mctx.font = `700 ${spec.nameSize}px ${fontStack}`;
+    const nameLines = wrapLines(mctx, e.name, spec.cardW - 32, 3);
+    mctx.font = `400 ${spec.metaSize}px ${fontStack}`;
+    const metaLines = [e.department, e.unit, e.phone, e.email].filter(Boolean).map(v => wrapLines(mctx, v, spec.cardW - 32, 20));
+
+    const nameLineH = Math.round(spec.nameSize * 1.26);
+    const metaLineH = Math.round(spec.metaSize * 1.4);
+    const h = 22 + spec.ph + 14 + (nameLines.length * nameLineH) + 14 + metaLines.reduce((n, lines) => n + lines.length * metaLineH + 4, 0) + 18;
+    return { nameLines, metaLines, nameLineH, metaLineH, h };
+  });
+
+  const numRows = Math.ceil(people.length / cols);
+  const rowHeights = [];
+  for (let r = 0; r < numRows; r++) {
+    const slice = cardMetrics.slice(r * cols, (r + 1) * cols);
+    rowHeights.push(Math.max(...slice.map(s => s.h)));
+  }
+
+  const bodyTopPad = 36, bodyBottomPad = 42;
+  const cardsTotalH = rowHeights.reduce((a, b) => a + b, 0) + Math.max(0, numRows - 1) * spec.gap;
+
+  const fLeft = ($('footerLeft').value || '').trim();
+  const fRight = ($('footerRight').value || '').trim();
+  const hasFooter = !!(fLeft || fRight);
+  const footerH = hasFooter ? 50 : 0;
+
+  const H = Math.max(690, heroH + barH + bodyTopPad + cardsTotalH + bodyBottomPad + footerH);
+
+  // 3. Create HiDPI Canvas
+  const c = document.createElement('canvas');
+  c.width = Math.round(W * scale);
+  c.height = Math.round(H * scale);
+  const x = c.getContext('2d');
+  x.scale(scale, scale);
+  x.imageSmoothingEnabled = true;
+  x.imageSmoothingQuality = 'high';
+
+  // 4. Draw Page Background Pattern
+  x.fillStyle = '#ffffff';
+  x.fillRect(0, 0, W, H);
+  if (bgStyle === 'dots') {
+    x.fillStyle = 'rgba(0, 150, 219, 0.16)';
+    for (let py = 10; py < H; py += 20) {
+      for (let px = 10; px < W; px += 20) {
+        x.beginPath();
+        x.arc(px, py, 1.35, 0, Math.PI * 2);
+        x.fill();
+      }
+    }
+  } else if (bgStyle === 'lines') {
+    x.save();
+    x.strokeStyle = '#eef7fc';
+    x.lineWidth = 2.5;
+    for (let d = -H; d < W + H; d += 16) {
+      x.beginPath();
+      x.moveTo(d, 0);
+      x.lineTo(d + H, H);
+      x.stroke();
+    }
+    x.restore();
+  }
+
+  // 5. Draw Hero Banner & Decorative Rings
+  x.save();
+  x.beginPath();
+  x.rect(0, 0, W, heroH);
+  x.clip();
+
+  const hg = x.createLinearGradient(0, 0, W, heroH * 0.85);
+  if (style === 'industrial') {
+    hg.addColorStop(0, '#162b39');
+    hg.addColorStop(1, '#24556b');
+  } else if (style === 'minimal') {
+    hg.addColorStop(0, '#f4f7f9');
+    hg.addColorStop(1, '#eaeff3');
+  } else if (style === 'celebration') {
+    hg.addColorStop(0, '#c02222');
+    hg.addColorStop(0.52, '#e04e5d');
+    hg.addColorStop(1, '#0096db');
+  } else {
+    hg.addColorStop(0, '#c02222');
+    hg.addColorStop(0.58, '#c02222');
+    hg.addColorStop(1, '#0096db');
+  }
+  x.fillStyle = hg;
+  x.fillRect(0, 0, W, heroH);
+
+  // Decorative subtle rings on left and right
+  const ringStroke = style === 'minimal' ? 'rgba(0, 150, 219, 0.08)' : 'rgba(255, 255, 255, 0.11)';
+  const drawRing = (cx, cy, r, lw) => {
+    x.beginPath();
+    x.arc(cx, cy, r, 0, Math.PI * 2);
+    x.strokeStyle = ringStroke;
+    x.lineWidth = lw;
+    x.stroke();
+  };
+  drawRing(W + 85 - 160, -135 + 160, 147, 26);
+  drawRing(W - 55 - 92, heroH + 95 - 92, 83, 18);
+  drawRing(-95 + 150, heroH + 145 - 150, 138, 24);
+  drawRing(55 + 82, -85 + 82, 74, 16);
+
+  // Hero Content (Centered or Left)
+  const isCenter = heroAlign !== 'left';
+  const anchorX = isCenter ? W / 2 : 64;
+  let curY = (heroH - heroContentH) / 2;
+
+  // Top Brand Logo (if uploaded) or Reserved Clean Space
+  if (brandLogoURL && brandLogoNatural) {
+    try {
+      const logoImg = await loadImg(brandLogoURL);
+      const lw = Math.min(360, (brandLogoNatural.w / brandLogoNatural.h) * logoH);
+      const lh = (brandLogoNatural.h / brandLogoNatural.w) * lw;
+      if (logoBackdrop === 'pill' || logoBackdrop === 'card') {
+        const padX = logoBackdrop === 'pill' ? 22 : 16;
+        const padY = 8;
+        const bw = lw + padX * 2;
+        const bh = lh + padY * 2;
+        const bx = isCenter ? (W - bw) / 2 : anchorX;
+        const br = logoBackdrop === 'pill' ? bh / 2 : 10;
+        x.save();
+        x.shadowColor = 'rgba(0,0,0,0.14)';
+        x.shadowBlur = 12;
+        x.shadowOffsetY = 3;
+        roundedRectPath(x, bx, curY, bw, bh, br);
+        x.fillStyle = '#ffffff';
+        x.fill();
+        x.restore();
+        x.drawImage(logoImg, bx + padX, curY + padY, lw, lh);
+        curY += bh + 14;
+      } else {
+        const lx = isCenter ? (W - lw) / 2 : anchorX;
+        x.drawImage(logoImg, lx, curY, lw, lh);
+        curY += lh + 14;
+      }
+    } catch (e) {}
+  } else if (reserveLogo) {
+    curY += 62;
+  }
+
+  x.textAlign = isCenter ? 'center' : 'left';
+  x.textBaseline = 'top';
+
+  // Headline
+  x.font = `800 ${headSize}px ${headFont}`;
+  x.fillStyle = style === 'minimal' ? '#c02222' : '#ffffff';
+  if (headlineImageURL) {
+    const img = await loadImg(headlineImageURL);
+    x.drawImage(img, isCenter ? (W-headlineImageW)/2 : anchorX, curY, headlineImageW, headlineImageH);
+    curY += headlineImageH;
+  } else headLines.forEach(line => { x.fillText(line, anchorX, curY); curY += headLineH; });
+
+  // Greeting Message
+  if (wishLines.length) {
+    curY += 6;
+    x.font = `400 18.5px ${fontStack}`;
+    x.fillStyle = style === 'minimal' ? '#4c6272' : 'rgba(255,255,255,0.97)';
+    wishLines.forEach(line => {
+      x.fillText(line, anchorX, curY);
+      curY += 26;
+    });
+  }
+
+  // Celebration Date
+  if (dateText) {
+    curY += 13;
+    x.font = `700 14.5px ${fontStack}`;
+    x.fillStyle = style === 'minimal' ? '#4c6272' : '#ffffff';
+    const spacedDate = dateText.split('').join('\u200A');
+    x.fillText(spacedDate, anchorX, curY);
+  }
+  x.restore();
+
+  // 6. Accent Divider Bar
+  if (style === 'celebration') {
+    const bg = x.createLinearGradient(0, 0, W, 0);
+    bg.addColorStop(0, '#f3b43b');
+    bg.addColorStop(0.5, '#e34f68');
+    bg.addColorStop(1, '#0096db');
+    x.fillStyle = bg;
+  } else if (style === 'industrial') {
+    x.fillStyle = '#e3a72f';
+  } else {
+    x.fillStyle = '#0096db';
+  }
+  x.fillRect(0, heroH, W, barH);
+
+  // 7. Draw Centered Portrait Employee Photocards Row by Row
+  let rowY = heroH + barH + bodyTopPad;
+  for (let r = 0; r < numRows; r++) {
+    const startIdx = r * cols;
+    const rowPeople = people.slice(startIdx, startIdx + cols);
+    const n = rowPeople.length;
+    const rowH = rowHeights[r];
+    const rowW = n * spec.cardW + (n - 1) * spec.gap;
+    const startX = (W - rowW) / 2; // Centers BOTH full rows and incomplete last rows!
+
+    for (let j = 0; j < n; j++) {
+      const idx = startIdx + j;
+      const emp = rowPeople[j];
+      const m = cardMetrics[idx];
+      const cx = startX + j * (spec.cardW + spec.gap);
+      const cy = rowY;
+      const cardRadius = style === 'celebration' ? 16 : style === 'industrial' ? 6 : style === 'minimal' ? 8 : 12;
+
+      // Card shadow & body
+      x.save();
+      x.shadowColor = style === 'celebration' ? 'rgba(192,34,34,0.10)' : 'rgba(15,41,66,0.08)';
+      x.shadowBlur = 18;
+      x.shadowOffsetY = 6;
+      roundedRectPath(x, cx, cy, spec.cardW, rowH, cardRadius);
+      if (style === 'celebration') {
+        const cg = x.createLinearGradient(cx, cy, cx, cy + rowH);
+        cg.addColorStop(0, '#ffffff');
+        cg.addColorStop(1, '#fff9f8');
+        x.fillStyle = cg;
+      } else if (style === 'industrial') {
+        x.fillStyle = '#f9fbfc';
+      } else {
+        x.fillStyle = '#ffffff';
+      }
+      x.fill();
+      x.restore();
+
+      // Card border & top accent bar clipped to card shape
+      x.save();
+      roundedRectPath(x, cx, cy, spec.cardW, rowH, cardRadius);
+      x.clip();
+
+      const topBarH = style === 'celebration' ? 7 : style === 'minimal' ? 4 : 6;
+      if (style === 'celebration') {
+        const tg = x.createLinearGradient(cx, cy, cx + spec.cardW, cy);
+        tg.addColorStop(0, '#f3b43b');
+        tg.addColorStop(0.5, '#e34f68');
+        tg.addColorStop(1, '#0096db');
+        x.fillStyle = tg;
+      } else if (style === 'industrial') {
+        x.fillStyle = '#e3a72f';
+      } else if (style === 'minimal') {
+        x.fillStyle = '#0096db';
+      } else {
+        const tg = x.createLinearGradient(cx, cy, cx + spec.cardW, cy);
+        tg.addColorStop(0, '#0096db');
+        tg.addColorStop(1, '#c02222');
+        x.fillStyle = tg;
+      }
+      x.fillRect(cx, cy, spec.cardW, topBarH);
+      x.restore();
+
+      // Crisp card border
+      roundedRectPath(x, cx, cy, spec.cardW, rowH, cardRadius);
+      x.strokeStyle = style === 'celebration' ? '#f5dce0' : style === 'industrial' ? '#c2d0d7' : '#dce7ed';
+      x.lineWidth = 1;
+      x.stroke();
+
+      // Portrait Photo Frame (Centered horizontally inside card)
+      const px = cx + (spec.cardW - spec.pw) / 2;
+      const py = cy + 22;
+
+      x.save();
+      roundedRectPath(x, px, py, spec.pw, spec.ph, spec.radius);
+      x.fillStyle = '#f2f6f9';
+      x.fill();
+      x.clip();
+
+      const rec = photoRecordFor(emp);
+      if (rec) {
+        try {
+          const im = await loadImg(rec.url);
+          const p = computePhotoPlacement(rec.w, rec.h, spec.pw, spec.ph, photoAdjust[emp._uid], globalFit);
+          x.drawImage(im, px + p.dx, py + p.dy, p.dw, p.dh);
+        } catch (err) {}
+      } else {
+        const initials = emp.name.trim().split(/\s+/).map(t => t[0] || '').join('').slice(0, 2).toUpperCase();
+        x.fillStyle = '#0096db';
+        x.font = `800 38px ${fontStack}`;
+        x.textAlign = 'center';
+        x.textBaseline = 'middle';
+        x.fillText(initials, px + spec.pw / 2, py + spec.ph / 2);
+      }
+      x.restore();
+
+      // Subtle border around photo frame
+      roundedRectPath(x, px, py, spec.pw, spec.ph, spec.radius);
+      x.strokeStyle = '#e3edf3';
+      x.lineWidth = 1;
+      x.stroke();
+
+      // Employee Name, Divider & Department / Division
+      let ty = py + spec.ph + 14;
+      x.textAlign = 'center';
+      x.textBaseline = 'top';
+      x.font = `700 ${spec.nameSize}px ${fontStack}`;
+      x.fillStyle = style === 'celebration' ? '#c02222' : style === 'industrial' ? '#1f3e4f' : style === 'minimal' ? '#263e4d' : '#0096db';
+      m.nameLines.forEach(line => {
+        x.fillText(line, cx + spec.cardW / 2, ty);
+        ty += m.nameLineH;
+      });
+
+      // Subtle divider line
+      ty += 4;
+      x.fillStyle = '#e5eff5';
+      x.fillRect(cx + (spec.cardW - 36) / 2, ty, 36, 2);
+      ty += 10;
+
+      x.font = `400 ${spec.metaSize}px ${fontStack}`;
+      x.fillStyle = '#607180';
+      m.metaLines.forEach(lines => {
+        lines.forEach(line => { x.fillText(line, cx + spec.cardW / 2, ty); ty += m.metaLineH; });
+        ty += 4;
+      });
+    }
+
+    rowY += rowH + spec.gap;
+  }
+
+  // 8. Draw Footer
+  if (hasFooter) {
+    const fy = H - footerH;
+    x.fillStyle = '#ffffff';
+    x.fillRect(0, fy, W, footerH);
+    x.strokeStyle = '#e5ecf0';
+    x.lineWidth = 1;
+    x.beginPath();
+    x.moveTo(0, fy);
+    x.lineTo(W, fy);
+    x.stroke();
+
+    x.font = `700 12px ${fontStack}`;
+    x.textBaseline = 'middle';
+    const midY = fy + footerH / 2;
+    if (fLeft && fRight) {
+      x.textAlign = 'left';
+      x.fillStyle = '#263746';
+      x.fillText(fLeft, 44, midY);
+      x.textAlign = 'right';
+      x.fillStyle = '#60707c';
+      x.fillText(fRight, W - 44, midY);
+    } else {
+      x.textAlign = 'center';
+      x.fillStyle = fLeft ? '#263746' : '#60707c';
+      x.fillText(fLeft || fRight, W / 2, midY);
+    }
+  }
+
+  return c;
+}
+
+async function downloadCanvas(c, name) {
+  return new Promise(resolve => {
+    if (c.toBlob) {
+      c.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.download = name;
+        a.href = url;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+        resolve();
+      }, 'image/png');
+    } else {
+      const a = document.createElement('a');
+      a.download = name;
+      a.href = c.toDataURL('image/png');
+      a.click();
+      resolve();
+    }
+  });
+}
+
+async function downloadEmployeePage() {
+  if (!pages.length || !pages[0].items.length) return;
+  const people = pages[0].items;
+  status('exportStatus', 'Rendering high-resolution birthday artwork...');
+  const c = await canvasForEmployees(people);
+  await downloadCanvas(c, 'Employee-Birthday-Artwork.png');
+  status('exportStatus', `Complete single-page artwork exported (${c.width} × ${c.height} px) with ${people.length} employees.`);
+}
+
+/* =========================================================
+   SENIOR LEADER TAB LOGIC & EXPORT
+   ========================================================= */
+function renderLeaderLogo() {
+  renderHeroLogoSlot($('leaderLogoSlot'), 46);
+  const frameEl = $('leaderImageFrame');
+  if (leaderImageURL && leaderImageNatural) {
+    const p = computePhotoPlacement(leaderImageNatural.w, leaderImageNatural.h, 364, 492, null, 'cover');
+    frameEl.innerHTML = `<img src="${leaderImageURL}" alt="Leader" style="width:${p.dw.toFixed(2)}px;height:${p.dh.toFixed(2)}px;left:${p.dx.toFixed(2)}px;top:${p.dy.toFixed(2)}px">`;
+  }
+}
+
+function generateLeader(silent) {
+  if (!silent && !$('leaderName').value.trim()) {
+    status('leaderStatus', 'Please enter the leader name.', 'err');
+    return;
+  }
+  $('leaderPreviewName').textContent = $('leaderName').value || 'Leader Name';
+  $('leaderPreviewDesignation').textContent = $('leaderDesignation').value || 'Designation';
+  $('leaderPreviewDepartment').textContent = 'Department: ' + ($('leaderDepartment').value || '—');
+  $('leaderPreviewDivision').textContent = 'Division: ' + ($('leaderDivision').value || '—');
+  $('leaderWish').textContent = $('leaderMessage').value || '';
+  $('leaderPreviewKicker').textContent = $('leaderKicker').value || '';
+  $('leaderPreviewDate').textContent = $('leaderDate').value || 'CELEBRATING YOU';
+  renderLeaderLogo();
+  if (!silent) status('leaderStatus', 'Leadership birthday artwork updated. Ready to export.');
+}
+
+$('leaderPhoto').addEventListener('change', async e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const rec = await readImageRecord(f);
+  leaderImageURL = rec.url;
+  leaderImageNatural = { w: rec.w, h: rec.h };
+  renderLeaderLogo();
+  status('leaderPhotoStatus', 'Leader photograph loaded and framed cleanly.');
+});
+
+function clearLeader() {
+  ['leaderName', 'leaderDesignation', 'leaderDepartment', 'leaderDivision', 'leaderDate'].forEach(id => $(id).value = '');
+  $('leaderKicker').value = 'CELEBRATING LEADERSHIP';
+  $('leaderMessage').value = 'Wishing you continued success, happiness and good health.';
+  leaderImageURL = null;
+  leaderImageNatural = null;
+  $('leaderImageFrame').innerHTML = '<span style="color:#8c9aa5;font-weight:700">LEADER PHOTO</span>';
+  generateLeader(true);
+}
+
+async function canvasForLeader() {
+  const scale = 2;
+  const W = 1100, H = 690;
+  const fontStack = '"Segoe UI", Tahoma, Arial, sans-serif';
+  const c = document.createElement('canvas');
+  c.width = W * scale;
+  c.height = H * scale;
+  const x = c.getContext('2d');
+  x.scale(scale, scale);
+  x.imageSmoothingEnabled = true;
+  x.imageSmoothingQuality = 'high';
+
+  x.fillStyle = '#f5f7f9';
+  x.fillRect(0, 0, W, H);
+
+  // Right angled panel
+  x.save();
+  x.beginPath();
+  x.moveTo(495 + (W - 495) * 0.08, 0);
+  x.lineTo(W, 0);
+  x.lineTo(W, H);
+  x.lineTo(495, H);
+  x.closePath();
+  const gr = x.createLinearGradient(495, 0, W, H);
+  gr.addColorStop(0, '#182e50');
+  gr.addColorStop(0.62, '#22428d');
+  gr.addColorStop(1, '#0096db');
+  x.fillStyle = gr;
+  x.fill();
+  x.clip();
+  x.beginPath();
+  x.arc(W + 95 - 195, -110 + 195, 180, 0, Math.PI * 2);
+  x.strokeStyle = 'rgba(255,255,255,0.11)';
+  x.lineWidth = 28;
+  x.stroke();
+  x.restore();
+
+  // Portrait Photo Frame
+  x.save();
+  x.shadowColor = 'rgba(23,40,61,0.18)';
+  x.shadowBlur = 28;
+  x.shadowOffsetY = 8;
+  roundedRectPath(x, 65, 62, 384, 512, 8);
+  x.fillStyle = '#ffffff';
+  x.fill();
+  x.restore();
+
+  x.save();
+  roundedRectPath(x, 75, 72, 364, 492, 4);
+  x.fillStyle = '#e9eff4';
+  x.fill();
+  x.clip();
+  if (leaderImageURL && leaderImageNatural) {
+    const im = await loadImg(leaderImageURL);
+    const p = computePhotoPlacement(leaderImageNatural.w, leaderImageNatural.h, 364, 492, null, 'cover');
+    x.drawImage(im, 75 + p.dx, 72 + p.dy, p.dw, p.dh);
+  }
+  x.restore();
+
+  // Right Text & Optional Top Logo
+  const tx = 580;
+  let ty = 72;
+  if (brandLogoURL && brandLogoNatural) {
+    try {
+      const lim = await loadImg(brandLogoURL);
+      const lh = 46;
+      const lw = Math.min(260, (brandLogoNatural.w / brandLogoNatural.h) * lh);
+      const backdrop = $('logoBackdrop').value || 'pill';
+      if (backdrop !== 'none') {
+        roundedRectPath(x, tx, ty, lw + 32, lh + 14, backdrop === 'pill' ? (lh + 14) / 2 : 8);
+        x.fillStyle = '#ffffff';
+        x.fill();
+        x.drawImage(lim, tx + 16, ty + 7, lw, lh);
+        ty += lh + 28;
+      } else {
+        x.drawImage(lim, tx, ty, lw, lh);
+        ty += lh + 20;
+      }
+    } catch (e) {}
+  } else if ($('reserveLogoSpace').checked) {
+    ty += 44;
+  }
+
+  x.textAlign = 'left';
+  x.textBaseline = 'top';
+  const kicker = ($('leaderKicker').value || '').trim();
+  if (kicker) {
+    x.font = `700 12px ${fontStack}`;
+    x.fillStyle = '#d5e8f7';
+    x.fillText(kicker.split('').join('\u200A'), tx, ty);
+    ty += 28;
+  }
+
+  x.font = `800 54px ${fontStack}`;
+  x.fillStyle = '#ffffff';
+  x.fillText('HAPPY', tx, ty);
+  ty += 56;
+  x.fillText('BIRTHDAY!', tx, ty);
+  ty += 70;
+
+  x.font = `400 18.5px ${fontStack}`;
+  x.fillStyle = '#ffffff';
+  const wishLines = wrapLines(x, $('leaderMessage').value, 455, 3);
+  wishLines.forEach(l => { x.fillText(l, tx, ty); ty += 27; });
+
+  ty += 34;
+  x.font = `700 31px ${fontStack}`;
+  x.fillStyle = '#ffffff';
+  x.fillText($('leaderName').value || 'Leader Name', tx, ty);
+  ty += 42;
+
+  x.font = `400 15px ${fontStack}`;
+  x.fillStyle = '#d7e6f2';
+  if ($('leaderDesignation').value) { x.fillText($('leaderDesignation').value, tx, ty); ty += 24; }
+  x.fillText('Department: ' + ($('leaderDepartment').value || '—'), tx, ty); ty += 24;
+  x.fillText('Division: ' + ($('leaderDivision').value || '—'), tx, ty); ty += 28;
+
+  x.fillStyle = '#ffd100';
+  x.fillRect(tx, ty, 100, 5);
+
+  // Footer
+  x.fillStyle = '#ffffff';
+  x.fillRect(0, H - 48, W, 48);
+  x.strokeStyle = '#e5ecf0';
+  x.beginPath();
+  x.moveTo(0, H - 48);
+  x.lineTo(W, H - 48);
+  x.stroke();
+  x.font = `700 12px ${fontStack}`;
+  x.fillStyle = '#5f6f7b';
+  x.textAlign = 'right';
+  x.textBaseline = 'middle';
+  x.fillText(($('leaderDate').value || 'CELEBRATING YOU').toUpperCase(), W - 44, H - 24);
+
+  return c;
+}
+
+async function downloadLeader() {
+  if (!$('leaderName').value.trim()) {
+    status('leaderStatus', 'Please enter the leader name.', 'err');
+    return;
+  }
+  generateLeader(true);
+  const c = await canvasForLeader();
+  await downloadCanvas(c, 'Senior-Leader-Birthday.png');
+}
+
+function downloadTemplate() {
+  const headers = [
+    'Employee Name', 'Employee Id', 'Official Email Id', 'Personal Mobile Number',
+    'Business Unit', 'Department Name', 'Designation Title', 'Office Location', 'Date of Birth'
+  ];
+  const csv = headers.map(h => '"' + h.replace(/"/g, '""') + '"').join(',');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  a.download = 'Employee_Birthday_Template.csv';
+  a.click();
+}
+
+/* Restore saved brand logo if available */
+(function init() {
+  const savedLogo = safeStorageGet('birthdayStudioBrandLogo');
+  if (savedLogo) setBrandLogoFromDataURL(savedLogo);
+  else updateBrandLogoUI();
+})();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a553107e2b23123b',t:'MTc5Mzc4OTQ5Ng=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a553107e2b23123b',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
