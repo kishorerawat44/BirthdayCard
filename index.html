@@ -367,6 +367,7 @@ body {
   z-index: 1;
 }
 .art-date:empty { display: none; }
+.below-banner-date:not(:empty) { margin: 0; height: 48px; display: flex; align-items: center; justify-content: center; background: #fff; color: #314b5c; flex-shrink: 0; }
 .art-bluebar { height: 8px; background: #0096db; width: 100%; flex-shrink: 0; }
 
 /* Centered Non-Stretching Portrait Card Grid */
@@ -850,7 +851,7 @@ body {
         <div class="section-title">
           <div>
             <h2>Employee list · Drag to reorder</h2>
-            <p>Rename each photo with the Employee Id (e.g. 8234.jpg), or click any card photo below to upload/adjust individually.</p>
+            <p>Edit any field directly, remove a wrong person, or drag rows to reorder. Changes are local; download the edited CSV to save them. Match photos by Employee ID, or click a photo to replace it.</p>
           </div>
           <button class="btn" onclick="resetOrder()">↺ Reset grade order</button>
         </div>
@@ -864,9 +865,12 @@ body {
                 <th>DOB</th>
                 <th>Department</th>
                 <th>Division</th>
+                <th>Designation</th>
+                <th>Location</th>
                 <th>Phone (editable)</th>
                 <th>Email (editable)</th>
                 <th>Photo</th>
+                <th>Remove</th>
               </tr>
             </thead>
             <tbody id="employeeRows"></tbody>
@@ -874,6 +878,8 @@ body {
         </div>
         <div class="actions">
           <button class="btn primary" onclick="generateEmployees()">Generate employee birthday designs</button>
+          <button class="btn" type="button" onclick="downloadEditedCSV()">Download edited CSV</button>
+          <button class="btn" type="button" id="undoRemove" style="display:none" onclick="undoEmployeeRemoval()">Undo last removal</button>
         </div>
       </div>
     </div>
@@ -900,9 +906,9 @@ body {
                 <div class="hero-logo-slot reserved-empty" id="employeeLogoSlot"></div>
                 <h2 id="employeeHeadline">HAPPY BIRTHDAY!</h2><img id="headlineImagePreview" alt="Birthday headline" style="display:none;position:relative;z-index:1;max-width:960px;max-height:100px;object-fit:contain;margin:0 0 11px">
                 <p id="employeeWish">Wishing you a year filled with happiness, success and new achievements.</p>
-                <div id="employeeDateLabel" class="art-date"></div>
               </div>
               <div class="art-bluebar"></div>
+              <div id="employeeDateLabel" class="art-date below-banner-date"></div>
               <div class="art-body" id="employeeBody">
                 <div class="art-cards" id="employeeCards"></div>
               </div>
@@ -920,6 +926,9 @@ body {
 
         <aside class="sidepanel">
           <h3>Top Logo &amp; Header</h3>
+          <div class="field"><label>Custom banner background image</label><input id="bannerImageInput" type="file" accept="image/*"><button class="btn sm" type="button" id="clearBanner" style="display:none">Remove banner image</button><small>Upload your own designed banner. The logo remains separate and can still be placed on top.</small></div>
+          <div class="field" id="bannerOptions" style="display:none"><label>Banner image fit</label><select id="bannerFit"><option value="contain">Show entire image</option><option value="cover">Fill banner (may crop edges)</option></select><label>Banner height: <span id="bannerHeightLabel">230</span> px</label><input id="bannerHeight" type="range" min="140" max="650" value="230"><small>Adjust height to fit your artwork. Canvas is 1100 px wide.</small></div>
+          <label class="checkline fullspan"><input id="hideBannerText" type="checkbox"><span>Hide banner headline and message (keep logo and date)</span></label>
           <input id="brandLogoInput" type="file" accept="image/*" style="display:none">
           <div class="logo-box-mini fullspan">
             <img id="brandLogoThumb" alt="Top Logo" style="display:none">
@@ -1115,7 +1124,7 @@ let leaderImageURL = null,
     photoOverrides = {},    // keyed by employee _uid -> { url, w, h }
     photoAdjust = {},       // keyed by employee _uid -> { zoom, x, y, fit }
     pages = [],
-    editingUid = null, headlineImageURL = null, headlineImageNatural = null;
+    editingUid = null, headlineImageURL = null, headlineImageNatural = null, bannerImageURL = null, bannerImageNatural = null, removedEmployee = null;
 
 const $ = id => document.getElementById(id);
 
@@ -1423,6 +1432,7 @@ $('csvFile').addEventListener('change', async e => {
     status('csvStatus', 'No valid employee records found. Check the CSV headers.', 'err');
     return;
   }
+  removedEmployee = null; $('undoRemove').style.display = 'none';
   originalEmployees = data.map(x => ({ ...x }));
   employees = sortByGrade(data);
   photoOverrides = {};
@@ -1455,14 +1465,11 @@ function renderEmployeeTable() {
   tb.innerHTML = employees.map((e, i) => `
     <tr draggable="true" data-i="${i}">
       <td style="color:#0096db;font-weight:700">⋮⋮</td>
-      <td><b>${esc(e.name)}</b></td>
-      <td>${esc(e.id)}</td>
-      <td>${esc(e.dob || '—')}</td>
-      <td>${esc(e.department || '—')}</td>
-      <td>${esc(e.unit || '—')}</td>
+      ${[['name','Name'],['id','ID'],['dob','DOB'],['department','Department'],['unit','Division'],['designation','Designation'],['location','Location']].map(([key,label]) => `<td><input aria-label="${label}" data-contact="${key}" value="${esc(e[key] || '')}" placeholder="${label}" style="min-width:${key === 'name' ? 150 : 110}px"></td>`).join('')}
       <td><input aria-label="Phone for ${esc(e.name)}" data-contact="phone" value="${esc(e.phone || '')}" placeholder="Phone" style="min-width:130px"></td>
       <td><input aria-label="Email for ${esc(e.name)}" data-contact="email" value="${esc(e.email || '')}" placeholder="Email" style="min-width:170px"></td>
-      <td>${photoRecordFor(e) ? '<span style="color:#1f8b4c;font-weight:700">✓ Matched</span>' : '<span style="color:#8c9aa6">— Missing</span>'}</td>
+      <td data-photo-status>${photoRecordFor(e) ? '<span style="color:#1f8b4c;font-weight:700">✓ Matched</span>' : '<span style="color:#8c9aa6">— Missing</span>'}</td>
+      <td><button type="button" class="btn sm" data-remove="${i}" aria-label="Remove ${esc(e.name)}">Remove</button></td>
     </tr>
   `).join('');
 
@@ -1472,11 +1479,26 @@ function renderEmployeeTable() {
       emp[input.dataset.contact] = input.value;
       const original = originalEmployees.find(e => e._uid === emp._uid);
       if (original) original[input.dataset.contact] = input.value;
+      updatePhotoCount();
+      $('gradeCount').textContent = new Set(employees.map(e => gradeOf(e.designation))).size;
+      if (input.dataset.contact === 'id') {
+        const cell = input.closest('tr').querySelector('[data-photo-status]');
+        if (cell) cell.textContent = photoRecordFor(emp) ? '✓ Matched' : '— Missing';
+      }
       renderEmployeeCards();
     });
     input.addEventListener('mousedown', e => e.stopPropagation());
     input.addEventListener('dragstart', e => e.stopPropagation());
   });
+  tb.querySelectorAll('[data-remove]').forEach(button => button.addEventListener('click', () => {
+    const index = +button.dataset.remove;
+    const [person] = employees.splice(index, 1);
+    removedEmployee = { person, index };
+    originalEmployees = originalEmployees.filter(e => e._uid !== person._uid);
+    $('undoRemove').style.display = 'inline-block';
+    refreshAfterEmployeeChange();
+    status('csvStatus', `Removed ${person.name || 'employee'} from this design. Use Undo last removal if needed.`);
+  }));
   let from = null;
   tb.querySelectorAll('tr').forEach(row => {
     row.addEventListener('dragstart', () => { from = +row.dataset.i; row.classList.add('dragging'); });
@@ -1497,6 +1519,26 @@ function renderEmployeeTable() {
   });
 }
 
+function refreshAfterEmployeeChange() {
+  $('empCount').textContent = employees.length;
+  $('gradeCount').textContent = new Set(employees.map(e => gradeOf(e.designation))).size;
+  updatePhotoCount(); buildPages(); renderEmployeeTable(); renderEmployeeCards();
+}
+function undoEmployeeRemoval() {
+  if (!removedEmployee) return;
+  const {person, index} = removedEmployee;
+  employees.splice(Math.min(index, employees.length), 0, person);
+  originalEmployees.push({...person}); removedEmployee = null;
+  $('undoRemove').style.display = 'none'; refreshAfterEmployeeChange();
+}
+function downloadEditedCSV() {
+  const fields = ['name','id','email','phone','unit','department','designation','location','dob'];
+  const headers = ['Employee Name','Employee Id','Official Email Id','Personal Mobile Number','Business Unit','Department Name','Designation Title','Office Location','Date of Birth'];
+  const cell = value => '"' + String(value || '').replace(/"/g, '""') + '"';
+  const csv = [headers.map(cell).join(','), ...employees.map(e => fields.map(k => cell(e[k])).join(','))].join('\r\n');
+  const url = URL.createObjectURL(new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8'}));
+  const a = document.createElement('a'); a.href = url; a.download = 'edited_employee_birthdays.csv'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
 function resetOrder() {
   employees = sortByGrade(originalEmployees);
   buildPages();
@@ -1551,6 +1593,11 @@ function renderEmployeeCards() {
 
   $('employeeArtwork').className = 'artboard design-' + style;
   $('employeeHero').className = 'art-hero' + (heroAlign === 'left' ? ' align-left' : '');
+  const hero = $('employeeHero');
+  hero.style.background = bannerImageURL ? `url("${bannerImageURL}") center center / ${$('bannerFit').value} no-repeat #fff` : '';
+  hero.style.minHeight = bannerImageURL ? $('bannerHeight').value + 'px' : '';
+  hero.style.justifyContent = bannerImageURL ? 'flex-start' : '';
+  hero.querySelectorAll('.ring-l1,.ring-l2,.ring-r1,.ring-r2').forEach(el => el.style.display = bannerImageURL ? 'none' : '');
   applyArtboardBackground();
 
   renderHeroLogoSlot($('employeeLogoSlot'));
@@ -1558,12 +1605,14 @@ function renderEmployeeCards() {
   $('employeeHeadline').textContent = $('empHeadline').value || 'HAPPY BIRTHDAY!';
   $('employeeHeadline').style.fontFamily = headlineFontFamily();
   $('employeeHeadline').style.fontSize = $('headlineSize').value + 'px';
-  $('employeeHeadline').style.display = headlineImageURL ? 'none' : '';
+  const hideText = $('hideBannerText').checked;
+  $('employeeHeadline').style.display = (headlineImageURL || hideText) ? 'none' : '';
   const headlineImg = $('headlineImagePreview');
-  headlineImg.style.display = headlineImageURL ? 'block' : 'none';
+  headlineImg.style.display = headlineImageURL && !hideText ? 'block' : 'none';
   if (headlineImageURL) headlineImg.src = headlineImageURL;
   $('employeeWish').textContent = $('empWish').value || '';
   $('employeeDateLabel').textContent = formatCelebrationDate($('celebrationDate').value);
+  $('employeeWish').style.display = hideText ? 'none' : '';
 
   // Footer
   const fLeft = ($('footerLeft').value || '').trim();
@@ -1595,7 +1644,7 @@ function renderEmployeeCards() {
   cardsContainer.innerHTML = people.map(e => {
     const rec = photoRecordFor(e);
     const adj = photoAdjust[e._uid] || null;
-    const initials = esc(e.name.trim().split(/\s+/).map(x => x[0] || '').join('').slice(0, 2).toUpperCase());
+    const initials = esc((e.name || '').trim().split(/\s+/).map(x => x[0] || '').join('').slice(0, 2).toUpperCase());
     let imgHtml = initials;
     if (rec) {
       const p = computePhotoPlacement(rec.w, rec.h, spec.pw, spec.ph, adj, globalFit);
@@ -1609,7 +1658,7 @@ function renderEmployeeCards() {
         </div>
         <h3 style="font-size:${spec.nameSize}px">${esc(e.name)}</h3>
         <div class="emp-meta-line"></div>
-        ${[e.department, e.unit, e.phone, e.email].filter(Boolean).map(value => `<p style="font-size:${spec.metaSize}px;overflow-wrap:anywhere">${esc(value)}</p>`).join('')}
+        ${[e.designation, e.department, e.unit, e.phone, e.email].filter(Boolean).map(value => `<p style="font-size:${spec.metaSize}px;overflow-wrap:anywhere">${esc(value)}</p>`).join('')}
       </div>
     `;
   }).join('');
@@ -1624,6 +1673,19 @@ function renderEmployeeCards() {
   'globalPhotoFit', 'bgStyle', 'heroAlign'
 ].forEach(id => $(id).addEventListener('change', renderEmployeeCards));
 
+$('bannerImageInput').addEventListener('change', async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const rec = await readImageRecord(f); bannerImageURL = rec.url; bannerImageNatural = rec;
+    const h = Math.max(140, Math.min(650, Math.round(1100 * rec.h / rec.w)));
+    $('bannerHeight').value = h; $('bannerHeightLabel').textContent = h;
+    $('bannerOptions').style.display = 'block'; $('clearBanner').style.display = 'inline-block'; renderEmployeeCards();
+  } catch(err) { status('exportStatus', 'Could not load the banner image.', 'err'); }
+});
+$('clearBanner').addEventListener('click', () => { bannerImageURL = null; bannerImageNatural = null; $('bannerImageInput').value = ''; $('bannerOptions').style.display = 'none'; $('clearBanner').style.display = 'none'; renderEmployeeCards(); });
+$('bannerFit').addEventListener('change', renderEmployeeCards);
+$('hideBannerText').addEventListener('change', renderEmployeeCards);
+$('bannerHeight').addEventListener('input', () => { $('bannerHeightLabel').textContent = $('bannerHeight').value; renderEmployeeCards(); });
 function headlineFontFamily() {
   return ({sans:'"Segoe UI", Tahoma, Arial, sans-serif', georgia:'Georgia, serif', trebuchet:'"Trebuchet MS", sans-serif', impact:'Impact, "Arial Narrow", sans-serif', cursive:'"Brush Script MT", cursive', custom:'"BirthdayCustom", sans-serif'})[$('headlineFont').value];
 }
@@ -1851,23 +1913,25 @@ async function canvasForEmployees(people) {
     topSlotH = 52 + 10;
   }
 
-  const headlineText = $('empHeadline').value || 'HAPPY BIRTHDAY!';
+  const hideText = $('hideBannerText').checked;
+  const headlineText = hideText ? '' : ($('empHeadline').value || 'HAPPY BIRTHDAY!');
   const headFont = headlineFontFamily(), headSize = +$('headlineSize').value;
   mctx.font = `800 ${headSize}px ${headFont}`;
-  const headLines = headlineImageURL ? [] : wrapLines(mctx, headlineText, 960, 2);
+  const headLines = (headlineImageURL || hideText) ? [] : wrapLines(mctx, headlineText, 960, 2);
   const headlineImageW = headlineImageNatural ? Math.min(960, headlineImageNatural.w * Math.min(1, 100 / headlineImageNatural.h)) : 0;
   const headlineImageH = headlineImageNatural ? headlineImageW * headlineImageNatural.h / headlineImageNatural.w : 0;
   const headLineH = Math.ceil(headSize * 1.06);
 
-  const wishText = $('empWish').value || '';
+  const wishText = hideText ? '' : ($('empWish').value || '');
   mctx.font = `400 18.5px ${fontStack}`;
   const wishLines = wrapLines(mctx, wishText, 790, 3);
 
   const dateText = formatCelebrationDate($('celebrationDate').value);
+  const dateBandH = dateText ? 48 : 0;
 
   const heroPadTop = 34, heroPadBottom = 32;
-  let heroContentH = topSlotH + (headlineImageURL ? headlineImageH : headLines.length * headLineH) + (wishLines.length ? 8 + wishLines.length * 26 : 0) + (dateText ? 14 + 20 : 0);
-  const heroH = Math.max(230, heroPadTop + heroContentH + heroPadBottom);
+  let heroContentH = topSlotH + (!hideText && headlineImageURL ? headlineImageH : headLines.length * headLineH) + (wishLines.length ? 8 + wishLines.length * 26 : 0);
+  const heroH = Math.max(bannerImageURL ? +$('bannerHeight').value : 230, heroPadTop + heroContentH + heroPadBottom);
   const barH = style === 'industrial' ? 9 : 8;
 
   // 2. Pre-measure each card's wrapped text so rows align cleanly & never overflow
@@ -1875,7 +1939,7 @@ async function canvasForEmployees(people) {
     mctx.font = `700 ${spec.nameSize}px ${fontStack}`;
     const nameLines = wrapLines(mctx, e.name, spec.cardW - 32, 3);
     mctx.font = `400 ${spec.metaSize}px ${fontStack}`;
-    const metaLines = [e.department, e.unit, e.phone, e.email].filter(Boolean).map(v => wrapLines(mctx, v, spec.cardW - 32, 20));
+    const metaLines = [e.designation, e.department, e.unit, e.phone, e.email].filter(Boolean).map(v => wrapLines(mctx, v, spec.cardW - 32, 20));
 
     const nameLineH = Math.round(spec.nameSize * 1.26);
     const metaLineH = Math.round(spec.metaSize * 1.4);
@@ -1898,7 +1962,7 @@ async function canvasForEmployees(people) {
   const hasFooter = !!(fLeft || fRight);
   const footerH = hasFooter ? 50 : 0;
 
-  const H = Math.max(690, heroH + barH + bodyTopPad + cardsTotalH + bodyBottomPad + footerH);
+  const H = Math.max(690, heroH + barH + dateBandH + bodyTopPad + cardsTotalH + bodyBottomPad + footerH);
 
   // 3. Create HiDPI Canvas
   const c = document.createElement('canvas');
@@ -1968,15 +2032,23 @@ async function canvasForEmployees(people) {
     x.lineWidth = lw;
     x.stroke();
   };
-  drawRing(W + 85 - 160, -135 + 160, 147, 26);
-  drawRing(W - 55 - 92, heroH + 95 - 92, 83, 18);
-  drawRing(-95 + 150, heroH + 145 - 150, 138, 24);
-  drawRing(55 + 82, -85 + 82, 74, 16);
+  if (bannerImageURL && bannerImageNatural) {
+    const im = await loadImg(bannerImageURL);
+    const factor = $('bannerFit').value === 'cover' ? Math.max(W/bannerImageNatural.w, heroH/bannerImageNatural.h) : Math.min(W/bannerImageNatural.w, heroH/bannerImageNatural.h);
+    const iw = bannerImageNatural.w*factor, ih = bannerImageNatural.h*factor;
+    x.fillStyle = '#fff'; x.fillRect(0, 0, W, heroH);
+    x.drawImage(im, (W-iw)/2, (heroH-ih)/2, iw, ih);
+  } else {
+    drawRing(W + 85 - 160, -135 + 160, 147, 26);
+    drawRing(W - 55 - 92, heroH + 95 - 92, 83, 18);
+    drawRing(-95 + 150, heroH + 145 - 150, 138, 24);
+    drawRing(55 + 82, -85 + 82, 74, 16);
+  }
 
   // Hero Content (Centered or Left)
   const isCenter = heroAlign !== 'left';
   const anchorX = isCenter ? W / 2 : 64;
-  let curY = (heroH - heroContentH) / 2;
+  let curY = bannerImageURL ? heroPadTop : (heroH - heroContentH) / 2;
 
   // Top Brand Logo (if uploaded) or Reserved Clean Space
   if (brandLogoURL && brandLogoNatural) {
@@ -2017,7 +2089,7 @@ async function canvasForEmployees(people) {
   // Headline
   x.font = `800 ${headSize}px ${headFont}`;
   x.fillStyle = style === 'minimal' ? '#c02222' : '#ffffff';
-  if (headlineImageURL) {
+  if (headlineImageURL && !hideText) {
     const img = await loadImg(headlineImageURL);
     x.drawImage(img, isCenter ? (W-headlineImageW)/2 : anchorX, curY, headlineImageW, headlineImageH);
     curY += headlineImageH;
@@ -2034,14 +2106,6 @@ async function canvasForEmployees(people) {
     });
   }
 
-  // Celebration Date
-  if (dateText) {
-    curY += 13;
-    x.font = `700 14.5px ${fontStack}`;
-    x.fillStyle = style === 'minimal' ? '#4c6272' : '#ffffff';
-    const spacedDate = dateText.split('').join('\u200A');
-    x.fillText(spacedDate, anchorX, curY);
-  }
   x.restore();
 
   // 6. Accent Divider Bar
@@ -2057,9 +2121,15 @@ async function canvasForEmployees(people) {
     x.fillStyle = '#0096db';
   }
   x.fillRect(0, heroH, W, barH);
+  if (dateText) {
+    x.fillStyle = '#ffffff'; x.fillRect(0, heroH + barH, W, dateBandH);
+    x.fillStyle = '#314b5c'; x.font = `700 14.5px ${fontStack}`;
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillText(dateText.split('').join('\u200A'), W / 2, heroH + barH + dateBandH / 2);
+  }
 
   // 7. Draw Centered Portrait Employee Photocards Row by Row
-  let rowY = heroH + barH + bodyTopPad;
+  let rowY = heroH + barH + dateBandH + bodyTopPad;
   for (let r = 0; r < numRows; r++) {
     const startIdx = r * cols;
     const rowPeople = people.slice(startIdx, startIdx + cols);
@@ -2466,5 +2536,5 @@ function downloadTemplate() {
   else updateBrandLogoUI();
 })();
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a553107e2b23123b',t:'MTc5Mzc4OTQ5Ng=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a553107e2b23123b',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a584db4278fb6ce7',t:'MTc5NDMxMTYwMw=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a584db4278fb6ce7',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
